@@ -1,0 +1,76 @@
+<header class="topbar">
+  <div class="topbar-breadcrumb">
+    <span>SIRD</span>
+    <strong>/</strong>
+    <strong>{{ currentTitle }}</strong>
+  </div>
+
+  <div class="topbar-actions">
+    <select
+      class="topbar-role"
+      [value]="selectedRole.id"
+      (change)="onRoleChange($event)"
+      aria-label="Rol para simulación"
+    >
+      @for (role of roles; track role.id) {
+        <option [value]="role.id">{{ role.label }}</option>
+      }
+    </select>
+
+    <button type="button" class="topbar-button" (click)="resetData()">
+      Restablecer datos
+    </button>
+
+    <button type="button" class="topbar-button" (click)="showAlerts()">
+      Avisos
+    </button>
+
+    <div class="topbar-user-wrapper">
+      <button
+        type="button"
+        class="topbar-user-trigger"
+        aria-label="Abrir menú de usuario"
+        [attr.aria-expanded]="userMenuOpen"
+        (click)="toggleUserMenu($event)"
+      >
+        <div class="topbar-user">
+          <strong>{{ selectedRole.user }}</strong>
+          <span>{{ selectedRole.username }}</span>
+        </div>
+
+        <div class="topbar-avatar">
+          {{ selectedRole.initials }}
+        </div>
+      </button>
+
+      @if (userMenuOpen) {
+        <div class="user-menu">
+          <div class="user-menu-header">
+            <div class="user-menu-avatar">
+              {{ selectedRole.initials }}
+            </div>
+
+            <div>
+              <strong>{{ selectedRole.user }}</strong>
+              <span>{{ selectedRole.label }}</span>
+            </div>
+          </div>
+
+          <div class="user-menu-divider"></div>
+
+          <button type="button" class="user-menu-item">
+            Mi perfil
+          </button>
+
+          <button type="button" class="user-menu-item">
+            Preferencias
+          </button>
+
+          <button type="button" class="user-menu-item danger" (click)="logout()">
+            Cerrar sesión
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</header>

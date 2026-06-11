@@ -1,0 +1,159 @@
+<section class="sird-page audit-page">
+  <header>
+    <p class="sird-page-kicker">Sistema Integrado de Repositorio Digital</p>
+    <h1 class="sird-page-title">Auditoría</h1>
+    <p class="sird-page-description">
+      Consulta de eventos M06: accesos, acciones críticas, trazabilidad documental y bloqueos.
+    </p>
+  </header>
+
+  <section class="sird-section audit-metrics">
+    <article class="sird-stat-card info">
+      <p class="sird-stat-label">Eventos visibles</p>
+      <p class="sird-stat-value">8</p>
+      <p class="sird-stat-help">Según perfil</p>
+    </article>
+
+    <article class="sird-stat-card success">
+      <p class="sird-stat-label">Correctos</p>
+      <p class="sird-stat-value">5</p>
+      <p class="sird-stat-help">Sin alerta</p>
+    </article>
+
+    <article class="sird-stat-card warning">
+      <p class="sird-stat-label">Advertencias</p>
+      <p class="sird-stat-value">2</p>
+      <p class="sird-stat-help">Revisar</p>
+    </article>
+
+    <article class="sird-stat-card danger">
+      <p class="sird-stat-label">Bloqueados</p>
+      <p class="sird-stat-value">1</p>
+      <p class="sird-stat-help">Acceso denegado</p>
+    </article>
+  </section>
+
+  <section class="sird-section audit-layout">
+    <div class="audit-main">
+      <article class="sird-card">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Filtros de auditoría</h2>
+          <span class="sird-badge sird-badge-info">M06</span>
+        </div>
+
+        <div class="sird-card-body audit-filters">
+          <label class="sird-field">
+            <span class="sird-label">Usuario</span>
+            <input class="sird-input" placeholder="Usuario institucional" />
+          </label>
+
+          <label class="sird-field">
+            <span class="sird-label">Módulo</span>
+            <select class="sird-select">
+              <option>Todos</option>
+              <option>Autenticación</option>
+              <option>Búsqueda documental</option>
+              <option>Espacios colaborativos</option>
+              <option>Solicitudes</option>
+            </select>
+          </label>
+
+          <label class="sird-field">
+            <span class="sird-label">Resultado</span>
+            <select class="sird-select">
+              <option>Todos</option>
+              <option>Correcto</option>
+              <option>Advertencia</option>
+              <option>Bloqueado</option>
+            </select>
+          </label>
+
+          <div class="audit-actions">
+            <button class="sird-btn sird-btn-primary" type="button" (click)="search()">
+              Buscar
+            </button>
+
+            <button class="sird-btn sird-btn-outline" type="button" (click)="exportLog()">
+              Exportar log
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="sird-card sird-section">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Registro de eventos</h2>
+          <span class="sird-badge sird-badge-warning">Log inmutable</span>
+        </div>
+
+        <div class="sird-table-wrap">
+          <table class="sird-table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Usuario</th>
+                <th>Acción</th>
+                <th>Módulo</th>
+                <th>Recurso</th>
+                <th>Resultado</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (event of events; track event.date + event.user) {
+                <tr>
+                  <td>{{ event.date }}</td>
+                  <td><strong>{{ event.user }}</strong></td>
+                  <td>{{ event.action }}</td>
+                  <td>{{ event.module }}</td>
+                  <td>{{ event.resource }}</td>
+                  <td>
+                    <span
+                      class="sird-badge"
+                      [class.sird-badge-success]="event.result === 'Correcto'"
+                      [class.sird-badge-warning]="event.result === 'Advertencia'"
+                      [class.sird-badge-danger]="event.result === 'Bloqueado'"
+                    >
+                      {{ event.result }}
+                    </span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </div>
+
+    <aside class="sird-card">
+      <div class="sird-card-header">
+        <h2 class="sird-card-title">Integridad del log</h2>
+        <span class="sird-badge sird-badge-success">Activo</span>
+      </div>
+
+      <div class="sird-card-body audit-side">
+        <div>
+          <strong>Modelo</strong>
+          <span>Registro inmutable M06</span>
+        </div>
+
+        <div>
+          <strong>Eventos críticos</strong>
+          <span>Login, descarga, firma, acceso denegado, transferencia TRD</span>
+        </div>
+
+        <div>
+          <strong>Exportación</strong>
+          <span>Disponible para Administrador SIRD</span>
+        </div>
+
+        <div class="sird-callout">
+          <p class="sird-callout-title">Trazabilidad</p>
+          <p>
+            Cada acción relevante queda asociada a usuario, fecha, módulo, recurso y resultado.
+          </p>
+        </div>
+      </div>
+    </aside>
+  </section>
+</section>

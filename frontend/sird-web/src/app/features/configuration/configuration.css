@@ -1,0 +1,59 @@
+.config-page {
+  max-width: 1280px;
+}
+
+.config-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.config-actions {
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.transfer-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.transfer-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.transfer-stat {
+  min-height: 92px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface-alt);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.transfer-stat strong {
+  color: var(--text);
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 950;
+}
+
+.transfer-stat span {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .config-form-grid,
+  .transfer-metrics {
+    grid-template-columns: 1fr;
+  }
+}

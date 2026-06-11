@@ -1,0 +1,157 @@
+<section class="sird-page reports-page">
+  <header>
+    <p class="sird-page-kicker">Sistema Integrado de Repositorio Digital</p>
+    <h1 class="sird-page-title">Reportes del SIRD</h1>
+    <p class="sird-page-description">
+      Indicadores, reportes operativos y exportaciones institucionales según permisos.
+    </p>
+  </header>
+
+  <section class="sird-section reports-metrics">
+    <article class="sird-stat-card info">
+      <p class="sird-stat-label">Documentos</p>
+      <p class="sird-stat-value">11</p>
+      <p class="sird-stat-help">Visibles</p>
+    </article>
+
+    <article class="sird-stat-card success">
+      <p class="sird-stat-label">Firmados</p>
+      <p class="sird-stat-value">7</p>
+      <p class="sird-stat-help">PKI válida</p>
+    </article>
+
+    <article class="sird-stat-card warning">
+      <p class="sird-stat-label">TRD vencidos</p>
+      <p class="sird-stat-value">2</p>
+      <p class="sird-stat-help">Requieren revisión</p>
+    </article>
+
+    <article class="sird-stat-card primary">
+      <p class="sird-stat-label">EC activos</p>
+      <p class="sird-stat-value">3</p>
+      <p class="sird-stat-help">En trabajo</p>
+    </article>
+
+    <article class="sird-stat-card danger">
+      <p class="sird-stat-label">Bloqueos</p>
+      <p class="sird-stat-value">1</p>
+      <p class="sird-stat-help">Acceso denegado</p>
+    </article>
+  </section>
+
+  <section class="sird-section reports-layout">
+    <div class="reports-main">
+      <article class="sird-card">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Reportes disponibles</h2>
+          <button class="sird-btn sird-btn-outline" type="button" (click)="exportDashboard()">
+            Exportar tablero
+          </button>
+        </div>
+
+        <div class="sird-table-wrap">
+          <table class="sird-table">
+            <thead>
+              <tr>
+                <th>Reporte</th>
+                <th>Alcance</th>
+                <th>Frecuencia</th>
+                <th>Formato</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (report of reports; track report.name) {
+                <tr>
+                  <td><strong>{{ report.name }}</strong></td>
+                  <td>{{ report.scope }}</td>
+                  <td>{{ report.frequency }}</td>
+                  <td>{{ report.format }}</td>
+                  <td>
+                    <button
+                      class="sird-btn sird-btn-primary sird-btn-sm"
+                      type="button"
+                      (click)="generateReport(report.name)"
+                    >
+                      Generar
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="sird-card sird-section">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Indicadores de gestión</h2>
+          <span class="sird-badge sird-badge-info">Resumen</span>
+        </div>
+
+        <div class="sird-card-body report-bars">
+          <div>
+            <strong>Documentos con firma válida</strong>
+            <span>64%</span>
+            <div class="report-bar"><i style="width: 64%"></i></div>
+          </div>
+
+          <div>
+            <strong>Espacios colaborativos activos</strong>
+            <span>75%</span>
+            <div class="report-bar"><i style="width: 75%"></i></div>
+          </div>
+
+          <div>
+            <strong>Integraciones operativas</strong>
+            <span>80%</span>
+            <div class="report-bar"><i style="width: 80%"></i></div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <aside class="sird-card">
+      <div class="sird-card-header">
+        <h2 class="sird-card-title">Parámetros del reporte</h2>
+      </div>
+
+      <div class="sird-card-body report-params">
+        <label class="sird-field">
+          <span class="sird-label">Periodo</span>
+          <select class="sird-select">
+            <option>Junio 2026</option>
+            <option>Mayo 2026</option>
+            <option>Abril 2026</option>
+          </select>
+        </label>
+
+        <label class="sird-field">
+          <span class="sird-label">Dependencia</span>
+          <select class="sird-select">
+            <option>Todas las dependencias</option>
+            <option>Gerencia General Regional</option>
+            <option>Sub Gerencia de Obras</option>
+          </select>
+        </label>
+
+        <label class="sird-field">
+          <span class="sird-label">Formato preferido</span>
+          <select class="sird-select">
+            <option>PDF</option>
+            <option>XLSX</option>
+            <option>CSV</option>
+          </select>
+        </label>
+
+        <div class="sird-callout">
+          <p class="sird-callout-title">Control de permisos</p>
+          <p>
+            Los reportes respetan alcance por rol, dependencia, proyecto y clasificación documental.
+          </p>
+        </div>
+      </div>
+    </aside>
+  </section>
+</section>

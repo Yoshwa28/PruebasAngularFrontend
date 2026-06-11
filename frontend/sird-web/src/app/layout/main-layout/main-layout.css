@@ -1,0 +1,53 @@
+.sird-shell {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+}
+
+.sird-main {
+  min-width: 0;
+  width: calc(100% - var(--sidebar-width));
+  margin-left: var(--sidebar-width);
+}
+
+.sird-content {
+  min-height: calc(100vh - var(--topbar-height));
+  padding-top: var(--topbar-height);
+}
+
+/* Tablet */
+@media (max-width: 1100px) {
+  .sird-content {
+    padding-top: 118px;
+  }
+}
+
+/* Móvil */
+@media (max-width: 900px) {
+  .sird-shell {
+    display: block;
+  }
+
+  .sird-main {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .sird-content {
+    min-height: 100vh;
+    padding-top: 118px;
+  }
+}
+
+/* Móvil pequeño */
+@media (max-width: 650px) {
+  .sird-content {
+    padding-top: 250px;
+  }
+}
+
+@media (max-width: 900px) {
+  .sird-content {
+    padding-bottom: 96px;
+  }
+}

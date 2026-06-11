@@ -1,0 +1,83 @@
+.requests-page {
+  max-width: 1280px;
+}
+
+.requests-metrics {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.requests-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(330px, 0.75fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.request-row {
+  cursor: pointer;
+}
+
+.request-row:hover {
+  background: #fbfcfd;
+}
+
+.detail-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.request-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.request-field span {
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.request-field strong,
+.request-field p {
+  min-height: 42px;
+  margin: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--surface-alt);
+  color: var(--text-soft);
+  padding: 11px 14px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.request-field p {
+  line-height: 1.45;
+}
+
+.request-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 1100px) {
+  .requests-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .requests-metrics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .requests-metrics {
+    grid-template-columns: 1fr;
+  }
+}

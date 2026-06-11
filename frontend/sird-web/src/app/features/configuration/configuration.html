@@ -1,0 +1,211 @@
+<section class="sird-page config-page">
+  <header>
+    <p class="sird-page-kicker">Sistema Integrado de Repositorio Digital</p>
+    <h1 class="sird-page-title">Configuración del sistema</h1>
+    <p class="sird-page-description">
+      Parámetros administrados por el Administrador SIRD: TRD, seguridad, feriados, PKI e integraciones.
+    </p>
+  </header>
+
+  <section class="sird-section">
+    <div class="sird-tabs">
+      <button class="sird-tab" [class.active]="activeTab === 'trd'" type="button" (click)="setTab('trd')">
+        TRD y series
+      </button>
+
+      <button class="sird-tab" [class.active]="activeTab === 'clasificacion'" type="button" (click)="setTab('clasificacion')">
+        Clasificación
+      </button>
+
+      <button class="sird-tab" [class.active]="activeTab === 'jwt'" type="button" (click)="setTab('jwt')">
+        JWT y seguridad
+      </button>
+
+      <button class="sird-tab" [class.active]="activeTab === 'feriados'" type="button" (click)="setTab('feriados')">
+        Feriados
+      </button>
+
+      <button class="sird-tab" [class.active]="activeTab === 'limites'" type="button" (click)="setTab('limites')">
+        Límites EC
+      </button>
+
+      <button class="sird-tab" [class.active]="activeTab === 'pki'" type="button" (click)="setTab('pki')">
+        PKI
+      </button>
+
+      <button class="sird-tab" [class.active]="activeTab === 'integraciones'" type="button" (click)="setTab('integraciones')">
+        Integraciones
+      </button>
+
+      <button class="sird-tab" [class.active]="activeTab === 'transferencia'" type="button" (click)="setTab('transferencia')">
+        Transferencia TRD
+      </button>
+    </div>
+  </section>
+
+  @if (activeTab === 'trd') {
+    <section class="sird-section">
+      <article class="sird-card">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">TRD y series documentales</h2>
+        </div>
+
+        <div class="sird-card-body">
+          <div class="config-form-grid">
+            <label class="sird-field">
+              <span class="sird-label">Código serie</span>
+              <input class="sird-input" value="ADM-04" />
+            </label>
+
+            <label class="sird-field">
+              <span class="sird-label">Nombre de serie</span>
+              <input class="sird-input" value="Informes administrativos" />
+            </label>
+
+            <label class="sird-field">
+              <span class="sird-label">Retención</span>
+              <input class="sird-input" value="5 años" />
+            </label>
+          </div>
+
+          <div class="config-actions">
+            <button class="sird-btn sird-btn-primary" type="button" (click)="saveSerie()">
+              Guardar serie TRD
+            </button>
+          </div>
+        </div>
+      </article>
+    </section>
+  }
+
+  @if (activeTab !== 'trd' && activeTab !== 'transferencia') {
+    <section class="sird-section">
+      <article class="sird-card">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Parámetro administrativo</h2>
+          <span class="sird-badge sird-badge-info">Simulación</span>
+        </div>
+
+        <div class="sird-card-body">
+          <div class="sird-callout">
+            <p class="sird-callout-title">Configuración disponible</p>
+            <p>
+              Esta sección representa parámetros configurables del SIRD para seguridad,
+              clasificación, límites, PKI o integraciones.
+            </p>
+          </div>
+        </div>
+      </article>
+    </section>
+  }
+
+  @if (activeTab === 'transferencia') {
+    <section class="sird-section">
+      <article class="sird-card">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Transferencia masiva TRD</h2>
+          <span class="sird-badge sird-badge-primary">Administrador SIRD</span>
+        </div>
+
+        <div class="sird-card-body transfer-body">
+          <div class="sird-callout">
+            <p class="sird-callout-title">Operación interna del SIRD</p>
+            <p>
+              Operación interna del SIRD. No implementa un módulo completo de Archivo Central;
+              solo marca documentos como transferidos y registra acta SGD de sustento.
+            </p>
+          </div>
+
+          <div class="transfer-metrics">
+            <article class="transfer-stat">
+              <strong>1</strong>
+              <span>Documentos vencidos detectados</span>
+            </article>
+
+            <article class="transfer-stat">
+              <strong>{{ previewDone ? '1' : '0' }}</strong>
+              <span>Previsualizados</span>
+            </article>
+
+            <article class="transfer-stat">
+              <strong>Admin</strong>
+              <span>Perfil requerido</span>
+            </article>
+          </div>
+
+          <div class="sird-table-wrap">
+            <table class="sird-table">
+              <thead>
+                <tr>
+                  <th>Paso</th>
+                  <th>Control</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Previsualizar lote</td>
+                  <td><span class="sird-badge sird-badge-success">Completado</span></td>
+                </tr>
+
+                <tr>
+                  <td>2</td>
+                  <td>Validar operación</td>
+                  <td><span class="sird-badge sird-badge-info">Habilitado</span></td>
+                </tr>
+
+                <tr>
+                  <td>3</td>
+                  <td>Registrar acta SGD</td>
+                  <td><span class="sird-badge sird-badge-warning">Requerido</span></td>
+                </tr>
+
+                <tr>
+                  <td>4</td>
+                  <td>Ejecutar transferencia</td>
+                  <td><span class="sird-badge sird-badge-success">Disponible</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="sird-table-wrap">
+            <table class="sird-table">
+              <thead>
+                <tr>
+                  <th>REP</th>
+                  <th>Documento</th>
+                  <th>Serie</th>
+                  <th>Estado TRD</th>
+                  <th>Acta</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>REP-2026-000301</td>
+                  <td>Reporte de mantenimiento de infraestructura</td>
+                  <td>MNT-02</td>
+                  <td><span class="sird-badge sird-badge-danger">Vencido</span></td>
+                  <td>SGD-TRD-2026-001</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="config-actions">
+            <button class="sird-btn sird-btn-outline" type="button" (click)="previewBatch()">
+              Previsualizar lote
+            </button>
+
+            <button class="sird-btn sird-btn-primary" type="button" (click)="executeTransfer()">
+              Ejecutar transferencia TRD
+            </button>
+          </div>
+        </div>
+      </article>
+    </section>
+  }
+</section>

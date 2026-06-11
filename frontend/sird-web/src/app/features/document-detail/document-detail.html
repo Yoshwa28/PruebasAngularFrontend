@@ -1,0 +1,124 @@
+<section class="sird-page detail-page">
+  <header>
+    <p class="sird-page-kicker">Sistema Integrado de Repositorio Digital</p>
+    <h1 class="sird-page-title">Detalle documental</h1>
+    <p class="sird-page-description">
+      Metadatos, visor simulado, acciones y mensajes de restricción según permisos.
+    </p>
+  </header>
+
+  <section class="sird-section detail-layout">
+    <div class="detail-main">
+      <article class="sird-card">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Información general</h2>
+          <span class="sird-badge sird-badge-success">Acceso autorizado</span>
+        </div>
+
+        <div class="sird-card-body">
+          <div class="detail-fields">
+            <div class="detail-field">
+              <span>Código REP</span>
+              <strong>REP-2026-000123</strong>
+            </div>
+
+            <div class="detail-field">
+              <span>Nombre del documento</span>
+              <strong>Plan Operativo Regional 2026</strong>
+            </div>
+
+            <div class="detail-field">
+              <span>Tipo documental</span>
+              <strong>Plan</strong>
+            </div>
+
+            <div class="detail-field">
+              <span>Serie documental</span>
+              <strong>PLA-01</strong>
+            </div>
+
+            <div class="detail-field">
+              <span>Dependencia productora</span>
+              <strong>Gerencia General Regional</strong>
+            </div>
+
+            <div class="detail-field">
+              <span>Sistema origen</span>
+              <strong>Planeamiento Regional</strong>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="sird-card sird-section">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Clasificación y seguridad</h2>
+        </div>
+
+        <div class="sird-card-body">
+          <div class="detail-fields">
+            <div class="detail-field">
+              <span>Clasificación</span>
+              <strong class="status-soft success">Público</strong>
+            </div>
+
+            <div class="detail-field">
+              <span>Estado PKI</span>
+              <strong class="status-soft success">Firmado</strong>
+            </div>
+
+            <div class="detail-field">
+              <span>Estado TRD</span>
+              <strong class="status-soft success">Vigente</strong>
+            </div>
+
+            <div class="detail-field">
+              <span>SHA-256</span>
+              <strong>9f8a5c0b1e0a6f4c2b91</strong>
+            </div>
+
+            <div class="detail-field">
+              <span>Versión activa</span>
+              <strong>v03</strong>
+            </div>
+
+            <div class="detail-field">
+              <span>Descripción</span>
+              <strong>Documento final de plan</strong>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <aside class="detail-side">
+      <article class="sird-card">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Visor documental simulado</h2>
+          <span class="sird-badge sird-badge-success">Descarga permitida</span>
+        </div>
+
+        <div class="sird-card-body">
+          <div class="document-preview">
+            <div class="paper">
+              <span></span>
+              <span></span>
+              <span></span>
+              <br />
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+
+          <div class="viewer-actions">
+            <button class="sird-btn sird-btn-primary" type="button" (click)="openViewer()">Abrir visor</button>
+            <button class="sird-btn sird-btn-outline" type="button" (click)="download()">Descargar</button>
+            <button class="sird-btn sird-btn-danger-outline" type="button" (click)="viewRep()">Ver REP</button>
+            <button class="sird-btn sird-btn-danger-outline" type="button" (click)="viewHistory()">Ver historial</button>
+          </div>
+        </div>
+      </article>
+    </aside>
+  </section>
+</section>

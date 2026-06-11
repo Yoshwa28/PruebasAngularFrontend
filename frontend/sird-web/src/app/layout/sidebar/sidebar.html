@@ -1,0 +1,55 @@
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-title">SIRD</div>
+    <div class="brand-subtitle">
+      Sistema Integrado de Repositorio<br />
+      Digital
+    </div>
+  </div>
+
+  <nav class="sidebar-nav" aria-label="Menú principal">
+    @for (item of menuItems; track item.route) {
+      <a
+        class="sidebar-link"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: item.route === '/app/inicio' }"
+      >
+        <span class="sidebar-code">{{ item.code }}</span>
+        <span class="sidebar-label">{{ item.label }}</span>
+      </a>
+    }
+  </nav>
+
+  <div class="sidebar-footer">
+    <strong>OE.8.3.1.7</strong>
+    <span>Gobierno Regional del Cusco</span>
+  </div>
+</aside>
+
+<nav class="mobile-nav" aria-label="Menú móvil principal">
+  <a routerLink="/app/inicio" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    <strong>IN</strong>
+    <span>Inicio</span>
+  </a>
+
+  <a routerLink="/app/busqueda-documental" routerLinkActive="active">
+    <strong>BD</strong>
+    <span>Buscar</span>
+  </a>
+
+  <a routerLink="/app/espacios-colaborativos" routerLinkActive="active">
+    <strong>EC</strong>
+    <span>Espacios</span>
+  </a>
+
+  <a routerLink="/app/solicitudes" routerLinkActive="active">
+    <strong>SN</strong>
+    <span>Solicitudes</span>
+  </a>
+
+  <a routerLink="/app/reportes" routerLinkActive="active">
+    <strong>RP</strong>
+    <span>Reportes</span>
+  </a>
+</nav>

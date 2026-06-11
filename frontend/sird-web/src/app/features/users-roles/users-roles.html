@@ -1,0 +1,161 @@
+<section class="sird-page users-page">
+  <header>
+    <p class="sird-page-kicker">Sistema Integrado de Repositorio Digital</p>
+    <h1 class="sird-page-title">Usuarios y roles</h1>
+    <p class="sird-page-description">
+      Gestión de usuarios institucionales y perfiles orgánicos del SIRD.
+    </p>
+  </header>
+
+  <section class="sird-section users-metrics">
+    <article class="sird-stat-card primary">
+      <p class="sird-stat-label">Usuarios mock</p>
+      <p class="sird-stat-value">5</p>
+      <p class="sird-stat-help">Uno por rol y nuevos</p>
+    </article>
+
+    <article class="sird-stat-card info">
+      <p class="sird-stat-label">Perfiles RBAC</p>
+      <p class="sird-stat-value">5</p>
+      <p class="sird-stat-help">Definitivos</p>
+    </article>
+
+    <article class="sird-stat-card success">
+      <p class="sird-stat-label">Activos</p>
+      <p class="sird-stat-value">5</p>
+      <p class="sird-stat-help">Con acceso</p>
+    </article>
+
+    <article class="sird-stat-card danger">
+      <p class="sird-stat-label">Bloqueados</p>
+      <p class="sird-stat-value">0</p>
+      <p class="sird-stat-help">Sin acceso</p>
+    </article>
+  </section>
+
+  <section class="sird-section users-layout">
+    <div class="users-main">
+      <article class="sird-card">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Usuarios registrados</h2>
+          <button class="sird-btn sird-btn-primary" type="button">
+            Nuevo usuario
+          </button>
+        </div>
+
+        <div class="sird-card-body user-search">
+          <input class="sird-input" placeholder="Buscar por usuario, nombre o dependencia" />
+          <button class="sird-btn sird-btn-primary" type="button" (click)="search()">Buscar usuario</button>
+          <button class="sird-btn sird-btn-outline" type="button" (click)="clear()">Limpiar</button>
+        </div>
+
+        <div class="sird-table-wrap">
+          <table class="sird-table">
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Nombre</th>
+                <th>Dependencia</th>
+                <th>Perfil</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (user of users; track user.username) {
+                <tr>
+                  <td><strong>{{ user.username }}</strong></td>
+                  <td>{{ user.name }}</td>
+                  <td>{{ user.dependency }}</td>
+                  <td>{{ user.profile }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="sird-card sird-section">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Reglas de mapeo RRHH a Perfil SIRD</h2>
+        </div>
+
+        <div class="sird-table-wrap">
+          <table class="sird-table">
+            <thead>
+              <tr>
+                <th>Cargo RRHH</th>
+                <th>Perfil SIRD asignado</th>
+                <th>Criterio</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Gerente Regional</td>
+                <td>Gerente / Sub Gerente</td>
+                <td>Cargo directivo de ámbito regional</td>
+              </tr>
+
+              <tr>
+                <td>Jefe de Proyecto</td>
+                <td>Jefe de Dependencia / Proyecto</td>
+                <td>Responsable de conducción operativa</td>
+              </tr>
+
+              <tr>
+                <td>Especialista Responsable</td>
+                <td>Especialista Responsable</td>
+                <td>Responsable funcional asignado</td>
+              </tr>
+
+              <tr>
+                <td>Técnico Administrativo</td>
+                <td>Técnico / Administrativo</td>
+                <td>Soporte operativo y administrativo</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </div>
+
+    <aside class="users-side">
+      <article class="sird-card">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Perfiles orgánicos definitivos</h2>
+        </div>
+
+        <div class="sird-card-body profile-pills">
+          <span class="sird-badge sird-badge-primary">Administrador SIRD</span>
+          <span class="sird-badge sird-badge-info">Gerente / Sub Gerente</span>
+          <span class="sird-badge sird-badge-info">Jefe de Dependencia / Proyecto</span>
+          <span class="sird-badge sird-badge-danger">Especialista Responsable</span>
+          <span class="sird-badge sird-badge-warning">Técnico / Administrativo</span>
+        </div>
+      </article>
+
+      <article class="sird-card sird-section">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Reglas administrativas</h2>
+        </div>
+
+        <div class="sird-card-body rules-list">
+          <div>
+            <strong>Gestión de usuarios</strong>
+            <p>Solo Administrador SIRD.</p>
+          </div>
+
+          <div>
+            <strong>Roles oficiales</strong>
+            <p>No se crean perfiles fuera de los 5 definidos.</p>
+          </div>
+
+          <div>
+            <strong>Excepción manual</strong>
+            <p>Debe registrarse con trazabilidad M10.</p>
+          </div>
+        </div>
+      </article>
+    </aside>
+  </section>
+</section>

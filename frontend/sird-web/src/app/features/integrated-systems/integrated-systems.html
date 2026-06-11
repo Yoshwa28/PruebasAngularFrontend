@@ -1,0 +1,107 @@
+<section class="sird-page systems-page">
+  <header>
+    <p class="sird-page-kicker">Sistema Integrado de Repositorio Digital</p>
+    <h1 class="sird-page-title">Sistemas integrados</h1>
+    <p class="sird-page-description">
+      Seguimiento de sistemas origen, credenciales, contratos A-1 a A-5 y comunicaciones.
+    </p>
+  </header>
+
+  <section class="sird-section systems-metrics">
+    <article class="sird-stat-card info">
+      <p class="sird-stat-label">Sistemas registrados</p>
+      <p class="sird-stat-value">25</p>
+      <p class="sird-stat-help">Mock operativo</p>
+    </article>
+
+    <article class="sird-stat-card success">
+      <p class="sird-stat-label">Conexiones activas</p>
+      <p class="sird-stat-value">4</p>
+      <p class="sird-stat-help">Operativas</p>
+    </article>
+
+    <article class="sird-stat-card danger">
+      <p class="sird-stat-label">Con error</p>
+      <p class="sird-stat-value">1</p>
+      <p class="sird-stat-help">Requieren atención</p>
+    </article>
+
+    <article class="sird-stat-card primary">
+      <p class="sird-stat-label">API Keys</p>
+      <p class="sird-stat-value">6</p>
+      <p class="sird-stat-help">Enmascaradas</p>
+    </article>
+
+    <article class="sird-stat-card warning">
+      <p class="sird-stat-label">Contratos</p>
+      <p class="sird-stat-value">A-1 a A-5</p>
+      <p class="sird-stat-help">Funcionales</p>
+    </article>
+  </section>
+
+  <section class="sird-section systems-layout">
+    <article class="sird-card">
+      <div class="sird-card-header">
+        <h2 class="sird-card-title">Sistemas origen registrados</h2>
+        <button class="sird-btn sird-btn-primary" type="button">
+          Nuevo sistema
+        </button>
+      </div>
+
+      <div class="sird-table-wrap">
+        <table class="sird-table">
+          <thead>
+            <tr>
+              <th>Sistema</th>
+              <th>Dependencia</th>
+              <th>Estado</th>
+              <th>Última conexión</th>
+              <th>Contrato</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (system of systems; track system.name) {
+              <tr>
+                <td><strong>{{ system.name }}</strong></td>
+                <td>{{ system.dependency }}</td>
+                <td><span class="sird-badge sird-badge-success">{{ system.status }}</span></td>
+                <td>{{ system.lastConnection }}</td>
+                <td>{{ system.contract }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <aside class="sird-card">
+      <div class="sird-card-header">
+        <h2 class="sird-card-title">Credenciales y permisos</h2>
+        <span class="sird-badge sird-badge-success">Activo</span>
+      </div>
+
+      <div class="sird-card-body credential-panel">
+        <label class="sird-field">
+          <span class="sird-label">Sistema</span>
+          <input class="sird-input" value="Trámite Documentario Regional" />
+        </label>
+
+        <label class="sird-field">
+          <span class="sird-label">API Key</span>
+          <input class="sird-input" value="sk_sird_************8273" />
+        </label>
+
+        <div class="permission-pills">
+          <span class="sird-badge sird-badge-success">Depositar</span>
+          <span class="sird-badge sird-badge-success">Consultar estado</span>
+          <span class="sird-badge sird-badge-success">Buscar</span>
+        </div>
+
+        <button class="sird-btn sird-btn-outline" type="button" (click)="renewApiKey()">
+          Renovar API Key
+        </button>
+      </div>
+    </aside>
+  </section>
+</section>

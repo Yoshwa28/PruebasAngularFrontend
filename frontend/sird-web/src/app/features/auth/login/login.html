@@ -1,0 +1,107 @@
+<section class="login-page">
+  <div class="login-hero">
+    <div class="login-brand">
+      <div class="login-logo">SIRD</div>
+      <div class="login-subtitle">
+        Sistema Integrado de Repositorio<br />
+        Digital
+      </div>
+    </div>
+
+    <div class="login-copy">
+      <p class="login-kicker">Gobierno Regional del Cusco</p>
+
+      <h1>
+        Custodia, trazabilidad y verificación documental institucional.
+      </h1>
+
+      <p class="login-description">
+        Plataforma para organizar, preservar, buscar, controlar acceso y
+        verificar la autenticidad de documentos finales del Gobierno Regional
+        del Cusco.
+      </p>
+    </div>
+
+    <div class="login-mini-cards">
+      <article class="login-mini-card">
+        <span>Repositorio</span>
+        <strong>Digital</strong>
+        <small>Documentos finales</small>
+      </article>
+
+      <article class="login-mini-card">
+        <span>Acceso</span>
+        <strong>RBAC</strong>
+        <small>5 perfiles orgánicos</small>
+      </article>
+
+      <article class="login-mini-card">
+        <span>Auditoría</span>
+        <strong>M06</strong>
+        <small>Log inmutable</small>
+      </article>
+    </div>
+  </div>
+
+  <div class="login-panel-wrap">
+    <article class="login-panel">
+      <p class="panel-kicker">Acceso autorizado</p>
+
+      <h2>Ingresar al SIRD</h2>
+
+      <p class="panel-description">
+        Seleccione un perfil para simular visibilidad, permisos y alcance
+        funcional.
+      </p>
+
+      <form class="login-form" (submit)="$event.preventDefault(); login()">
+        <label class="login-field">
+          <span>Usuario institucional</span>
+          <input
+            type="text"
+            value="usuario.institucional"
+            autocomplete="username"
+          />
+        </label>
+
+        <label class="login-field">
+          <span>Contraseña</span>
+          <input
+            type="password"
+            value="1234"
+            autocomplete="current-password"
+          />
+        </label>
+
+        <label class="login-field">
+          <span>Rol para simulación</span>
+          <select [value]="selectedRole" (change)="onRoleChange($event)">
+            @for (role of roles; track role.id) {
+              <option [value]="role.id">{{ role.label }}</option>
+            }
+          </select>
+        </label>
+
+        <button type="submit" class="login-primary">
+          Ingresar
+        </button>
+
+        <button
+          type="button"
+          class="login-secondary"
+          (click)="recoverPassword()"
+        >
+          Recuperar contraseña
+        </button>
+      </form>
+
+      <div class="login-callout">
+        <strong>Acceso restringido y auditable</strong>
+        <span>
+          El rol seleccionado condiciona módulos, documentos, solicitudes y
+          acciones.
+        </span>
+      </div>
+    </article>
+  </div>
+</section>

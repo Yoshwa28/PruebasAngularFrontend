@@ -1,0 +1,69 @@
+# =========================
+# Angular / Node
+# =========================
+node_modules/
+dist/
+.angular/
+.cache/
+coverage/
+tmp/
+out-tsc/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# Java / Spring Boot
+# =========================
+target/
+build/
+.gradle/
+*.class
+*.jar
+*.war
+*.ear
+
+# =========================
+# IDEs
+# =========================
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+*.launch
+.c9/
+*.sublime-workspace
+.history/
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# Variables y configuración local
+# =========================
+.env
+.env.*
+application-local.properties
+application-dev.properties
+application-prod.properties
+
+# =========================
+# Archivos comprimidos y backups
+# =========================
+*.zip
+*.rar
+*.7z
+*.bak
+*.backup
+*.tmp
+
+# =========================
+# Sistema operativo
+# =========================
+.DS_Store
+Thumbs.db

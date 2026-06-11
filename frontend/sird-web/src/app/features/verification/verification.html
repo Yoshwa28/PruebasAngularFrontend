@@ -1,0 +1,117 @@
+<section class="sird-page verification-page">
+  <header>
+    <p class="sird-page-kicker">Sistema Integrado de Repositorio Digital</p>
+    <h1 class="sird-page-title">Verificación de autenticidad por REP</h1>
+    <p class="sird-page-description">
+      Consulta de autenticidad documental mediante código REP y validación técnica simulada.
+    </p>
+  </header>
+
+  <section class="sird-section verification-layout">
+    <div class="verification-main">
+      <article class="sird-card">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Consulta por código REP</h2>
+        </div>
+
+        <div class="sird-card-body rep-form">
+          <input class="sird-input" value="REP-2026-000123" />
+          <button class="sird-btn sird-btn-primary" type="button" (click)="verify()">Verificar</button>
+          <button class="sird-btn sird-btn-outline" type="button" (click)="clear()">Limpiar</button>
+        </div>
+      </article>
+
+      <div class="verification-status-grid">
+        <article class="status-card success">
+          <span>Firmado</span>
+          <strong>Firma válida</strong>
+        </article>
+
+        <article class="status-card neutral">
+          <span>Sin firma</span>
+          <strong>Estado legítimo</strong>
+        </article>
+
+        <article class="status-card neutral">
+          <span>No encontrado</span>
+          <strong>Sin registro</strong>
+        </article>
+
+        <article class="status-card danger">
+          <span>Integridad comprometida</span>
+          <strong>Prioridad absoluta</strong>
+        </article>
+      </div>
+
+      <article class="sird-card sird-section">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Resultado de autenticidad</h2>
+        </div>
+
+        <div class="sird-card-body">
+          @if (verified) {
+            <div class="verified-result">
+              <span class="sird-badge sird-badge-success">Firmado</span>
+              <h3>Documento verificado correctamente</h3>
+              <p>
+                El código REP corresponde a un documento final registrado, con firma válida,
+                hash coincidente y trazabilidad disponible en M06.
+              </p>
+            </div>
+          } @else {
+            <div class="empty-result">
+              <strong>Sin verificación</strong>
+              <p>Ingrese un código REP y presione Verificar.</p>
+            </div>
+          }
+        </div>
+      </article>
+    </div>
+
+    <aside class="verification-side">
+      <article class="sird-card">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Uso de la verificación</h2>
+        </div>
+
+        <div class="sird-card-body side-list">
+          <div>
+            <strong>Consulta REP</strong>
+            <p>Disponible para todos los perfiles del prototipo.</p>
+          </div>
+
+          <div>
+            <strong>Constancia</strong>
+            <p>Disponible cuando el resultado es Firmado.</p>
+          </div>
+
+          <div>
+            <strong>Auditoría</strong>
+            <p>Cada verificación se registra en M06.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="sird-card sird-section">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Constancia</h2>
+        </div>
+
+        <div class="sird-card-body">
+          <p class="constancy-text">
+            La constancia simulada incluye REP, nombre documental, hash y fecha de verificación.
+          </p>
+
+          <button
+            class="sird-btn sird-btn-outline"
+            type="button"
+            [disabled]="!verified"
+            (click)="generateCertificate()"
+          >
+            Generar constancia
+          </button>
+        </div>
+      </article>
+    </aside>
+  </section>
+</section>

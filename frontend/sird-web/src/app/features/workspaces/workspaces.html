@@ -1,0 +1,764 @@
+<section class="sird-page workspaces-page">
+  <header>
+    <p class="sird-page-kicker">Sistema Integrado de Repositorio Digital</p>
+    <h1 class="sird-page-title">Espacios colaborativos</h1>
+    <p class="sird-page-description">
+      Espacios filtrados por gerencia, dependencia, jefe responsable o asignación directa.
+    </p>
+  </header>
+
+  @if (activeView === 'list') {
+    <section class="sird-section workspace-metrics">
+      <article class="sird-stat-card info">
+        <p class="sird-stat-label">EC visibles</p>
+        <p class="sird-stat-value">4</p>
+        <p class="sird-stat-help">Según rol</p>
+      </article>
+
+      <article class="sird-stat-card success">
+        <p class="sird-stat-label">EC activos</p>
+        <p class="sird-stat-value">3</p>
+        <p class="sird-stat-help">En elaboración</p>
+      </article>
+
+      <article class="sird-stat-card warning">
+        <p class="sird-stat-label">EC cerrados</p>
+        <p class="sird-stat-value">1</p>
+        <p class="sird-stat-help">Solo lectura</p>
+      </article>
+
+      <article class="sird-stat-card danger">
+        <p class="sird-stat-label">Cierre permitido</p>
+        <p class="sird-stat-value">3</p>
+        <p class="sird-stat-help">Según responsable</p>
+      </article>
+    </section>
+
+    <section class="sird-section workspace-list-layout">
+      <div class="workspace-left">
+        <article class="sird-card">
+          <div class="sird-card-header">
+            <h2 class="sird-card-title">Espacios disponibles</h2>
+            <button class="sird-btn sird-btn-primary" type="button">
+              Nuevo espacio
+            </button>
+          </div>
+
+          <div class="sird-table-wrap">
+            <table class="sird-table">
+              <thead>
+                <tr>
+                  <th>REP</th>
+                  <th>Nombre</th>
+                  <th>Tipo</th>
+                  <th>Dependencia</th>
+                  <th>Jefe responsable</th>
+                  <th>Cuota</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                @for (space of spaces; track space.rep) {
+                  <tr class="workspace-row" (click)="selectSpace(space)">
+                    <td><strong>{{ space.rep }}</strong></td>
+                    <td>{{ space.name }}</td>
+                    <td>{{ space.type }}</td>
+                    <td>{{ space.dependency }}</td>
+                    <td>{{ space.responsible }}</td>
+                    <td>
+                      <div class="quota-mini">
+                        <span [style.width.%]="space.quota"></span>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="sird-card sird-section">
+          <div class="sird-card-header">
+            <h2 class="sird-card-title">Archivos recientes</h2>
+          </div>
+
+          <div class="sird-table-wrap">
+            <table class="sird-table">
+              <thead>
+                <tr>
+                  <th>Archivo</th>
+                  <th>Carpeta</th>
+                  <th>Versión</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                @for (file of files; track file.name) {
+                  <tr>
+                    <td>{{ file.name }}</td>
+                    <td>{{ file.folder }}</td>
+                    <td>{{ file.version }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+
+      <aside class="workspace-right">
+        <article class="sird-card">
+          <div class="sird-card-header">
+            <h2 class="sird-card-title">Detalle del espacio</h2>
+            <span class="sird-badge sird-badge-success">Activo</span>
+          </div>
+
+          <div class="sird-card-body detail-list">
+            <div>
+              <strong>REP asignado</strong>
+              <span>{{ selectedSpace.rep }}</span>
+            </div>
+
+            <div>
+              <strong>Nombre</strong>
+              <span>{{ selectedSpace.name }}</span>
+            </div>
+
+            <div>
+              <strong>Responsable</strong>
+              <span>{{ selectedSpace.responsible }}</span>
+            </div>
+
+            <div>
+              <strong>Dependencia</strong>
+              <span>{{ selectedSpace.dependency }}</span>
+            </div>
+
+            <div>
+              <strong>Cuota</strong>
+              <span>{{ selectedSpace.quota }} GB / 100 GB</span>
+              <div class="quota-bar">
+                <span [style.width.%]="selectedSpace.quota"></span>
+              </div>
+            </div>
+
+            <div>
+              <strong>Tamaño máximo</strong>
+              <span>500 MB por archivo</span>
+            </div>
+
+            <div class="workspace-actions">
+              <button class="sird-btn sird-btn-primary" type="button" (click)="openSpace()">
+                Abrir espacio
+              </button>
+
+              <button class="sird-btn sird-btn-outline" type="button" (click)="uploadFile()">
+                Subir archivo
+              </button>
+
+              <button class="sird-btn sird-btn-primary" type="button">
+                Cierre formal
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="sird-card sird-section">
+          <div class="sird-card-header">
+            <h2 class="sird-card-title">Actividad reciente</h2>
+          </div>
+
+          <div class="sird-card-body activity-list">
+            <div>
+              <strong>10:42</strong>
+              <span>Carpeta creada<br />03_Informes</span>
+            </div>
+
+            <div>
+              <strong>10:15</strong>
+              <span>Archivo cargado<br />informe_avance.pdf</span>
+            </div>
+
+            <div>
+              <strong>09:55</strong>
+              <span>Acceso actualizado<br />Especialista Responsable</span>
+            </div>
+          </div>
+        </article>
+      </aside>
+    </section>
+  }
+
+  @if (activeView === 'internal') {
+    <section class="sird-section">
+      <article class="sird-card workspace-summary">
+        <div class="sird-card-body">
+          <div class="summary-header">
+            <div>
+              <p class="summary-kicker">Espacio colaborativo</p>
+              <h2>{{ selectedSpace.name }}</h2>
+              <p>{{ selectedSpace.dependency }} / Proyecto</p>
+            </div>
+
+            <div class="summary-actions">
+              <button class="sird-btn sird-btn-outline" type="button" (click)="backToSpaces()">
+                Volver a espacios
+              </button>
+
+              <button class="sird-btn sird-btn-outline" type="button" (click)="createFolder()">
+                Nueva carpeta
+              </button>
+
+              <button class="sird-btn sird-btn-primary" type="button" (click)="uploadFile()">
+                Subir archivo
+              </button>
+            </div>
+          </div>
+
+          <div class="summary-grid">
+            <div>
+              <strong>REP</strong>
+              <span>{{ selectedSpace.rep }}</span>
+            </div>
+
+            <div>
+              <strong>Estado</strong>
+              <span class="sird-badge sird-badge-success">Activo</span>
+            </div>
+
+            <div>
+              <strong>Responsable</strong>
+              <span>{{ selectedSpace.responsible }}</span>
+            </div>
+
+            <div>
+              <strong>Dependencia / proyecto</strong>
+              <span>{{ selectedSpace.dependency }} / {{ selectedSpace.name }}</span>
+            </div>
+
+            <div>
+              <strong>Cuota</strong>
+              <span>{{ selectedSpace.quota }} GB / 100 GB ({{ selectedSpace.quota }}%)</span>
+            </div>
+
+            <div>
+              <strong>Archivos</strong>
+              <span>3 total. 1 firmados. 0 finales</span>
+            </div>
+          </div>
+
+          <div class="sird-callout">
+            <p class="sird-callout-title">Firma institucional</p>
+            <p>
+              El SIRD no realiza la firma directamente. Invoca el servicio/API de firma digital
+              institucional y registra el resultado para trazabilidad.
+            </p>
+          </div>
+
+          <div class="profile-visible">
+            4 EC visibles para el perfil
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="sird-section">
+      <div class="sird-tabs">
+        <button
+          class="sird-tab"
+          [class.active]="activeTab === 'files'"
+          type="button"
+          (click)="setTab('files')"
+        >
+          Archivos
+        </button>
+
+        <button
+          class="sird-tab"
+          [class.active]="activeTab === 'structure'"
+          type="button"
+          (click)="setTab('structure')"
+        >
+          Estructura
+        </button>
+
+        <button
+          class="sird-tab"
+          [class.active]="activeTab === 'participants'"
+          type="button"
+          (click)="setTab('participants')"
+        >
+          Participantes
+        </button>
+
+        <button
+          class="sird-tab"
+          [class.active]="activeTab === 'activity'"
+          type="button"
+          (click)="setTab('activity')"
+        >
+          Actividad
+        </button>
+
+        <button
+          class="sird-tab"
+          [class.active]="activeTab === 'closure'"
+          type="button"
+          (click)="setTab('closure')"
+        >
+          Cierre formal
+        </button>
+      </div>
+    </section>
+
+    @if (activeTab === 'files') {
+      <section class="sird-section internal-files-layout">
+        <aside class="sird-card folder-tree">
+          <div class="sird-card-header">
+            <h2 class="sird-card-title">Estructura documental</h2>
+          </div>
+
+          <div class="sird-card-body folder-list">
+            <button class="folder active" type="button">
+              <strong>ROOT</strong>
+              <span>3 archivos / -</span>
+            </button>
+
+            <button class="folder" type="button">
+              <strong>01_Actas</strong>
+              <span>1 archivo</span>
+            </button>
+
+            <button class="folder" type="button">
+              <strong>02_Anexos</strong>
+              <span>1 archivo</span>
+            </button>
+
+            <button class="folder" type="button">
+              <strong>03_Informes</strong>
+              <span>1 archivo</span>
+            </button>
+
+            <button class="folder" type="button">
+              <strong>04_Cierre</strong>
+              <span>0 archivos</span>
+            </button>
+
+            <button class="sird-btn sird-btn-outline sird-btn-sm" type="button" (click)="createFolder()">
+              Nueva carpeta
+            </button>
+          </div>
+        </aside>
+
+        <div class="files-content">
+          <article class="sird-card filters-card">
+            <div class="sird-card-body filters-row">
+              <label class="sird-field">
+                <span class="sird-label">Buscar archivo</span>
+                <input class="sird-input" placeholder="Nombre, tipo, carpeta o versión" />
+              </label>
+
+              <label class="sird-field">
+                <span class="sird-label">Estado</span>
+                <select class="sird-select">
+                  <option>Todos</option>
+                  <option>En revisión</option>
+                  <option>Firmado</option>
+                  <option>Borrador</option>
+                </select>
+              </label>
+
+              <label class="sird-field">
+                <span class="sird-label">Carpeta</span>
+                <select class="sird-select">
+                  <option>Todas las carpetas</option>
+                  <option>01_Actas</option>
+                  <option>02_Anexos</option>
+                  <option>03_Informes</option>
+                </select>
+              </label>
+
+              <div class="filter-actions">
+                <button class="sird-btn sird-btn-outline" type="button">Filtrar</button>
+                <button class="sird-btn sird-btn-danger-outline" type="button">Limpiar</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="sird-card sird-section">
+            <div class="sird-card-header">
+              <div>
+                <h2 class="sird-card-title">Archivos del espacio</h2>
+                <p class="table-subtitle">Todas las carpetas / Todos los estados</p>
+              </div>
+
+              <span class="sird-badge sird-badge-warning">3 archivos</span>
+            </div>
+
+            <div class="sird-table-wrap">
+              <table class="sird-table">
+                <thead>
+                  <tr>
+                    <th>Archivo</th>
+                    <th>Carpeta</th>
+                    <th>Tipo</th>
+                    <th>Versión</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  @for (file of files; track file.name) {
+                    <tr>
+                      <td><strong>{{ file.name }}</strong></td>
+                      <td>{{ file.folder }}</td>
+                      <td>{{ file.type }}</td>
+                      <td>{{ file.version }}</td>
+                      <td>
+                        <span
+                          class="sird-badge"
+                          [class.sird-badge-warning]="file.status === 'En revisión'"
+                          [class.sird-badge-success]="file.status === 'Firmado'"
+                          [class.sird-badge-danger]="file.status === 'Borrador'"
+                        >
+                          {{ file.status }}
+                        </span>
+                      </td>
+                      <td>
+                        <div class="table-actions">
+                          <button class="sird-btn sird-btn-outline sird-btn-sm" type="button">
+                            Ver
+                          </button>
+
+                          @if (file.status !== 'Firmado') {
+                            <button
+                              class="sird-btn sird-btn-primary sird-btn-sm"
+                              type="button"
+                              (click)="openSignModal(file.name)"
+                            >
+                              Invocar firma
+                            </button>
+                          }
+
+                          @if (file.status === 'Firmado') {
+                            <button class="sird-btn sird-btn-primary sird-btn-sm" type="button">
+                              Convertir final
+                            </button>
+                          }
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="sird-card sird-section file-detail">
+            <div class="sird-card-header">
+              <h2 class="sird-card-title">Detalle de archivo</h2>
+              <span class="sird-badge sird-badge-warning">En revisión</span>
+            </div>
+
+            <div class="sird-card-body file-detail-grid">
+              <div>
+                <strong>Nombre</strong>
+                <span>acta_reunion_01.docx</span>
+              </div>
+
+              <div>
+                <strong>Carpeta</strong>
+                <span>01_Actas</span>
+              </div>
+
+              <div>
+                <strong>Tipo</strong>
+                <span>Acta</span>
+              </div>
+
+              <div>
+                <strong>Versión</strong>
+                <span>v02</span>
+              </div>
+
+              <div>
+                <strong>Estado</strong>
+                <span>En revisión</span>
+              </div>
+
+              <div>
+                <strong>Firma</strong>
+                <span>Pendiente</span>
+              </div>
+
+              <div>
+                <strong>Hash</strong>
+                <span>Pendiente de firma</span>
+              </div>
+
+              <div>
+                <strong>Fecha de carga</strong>
+                <span>10/06/2026</span>
+              </div>
+
+              <div>
+                <strong>Cargado por</strong>
+                <span>Alberto Pérez Ccama</span>
+              </div>
+
+              <div>
+                <strong>Última actividad</strong>
+                <span>-</span>
+              </div>
+
+              <div class="file-detail-actions">
+                <button class="sird-btn sird-btn-outline" type="button">Ver</button>
+                <button class="sird-btn sird-btn-outline" type="button">Nueva versión</button>
+                <button
+                  class="sird-btn sird-btn-primary"
+                  type="button"
+                  (click)="openSignModal('acta_reunion_01.docx')"
+                >
+                  Invocar firma
+                </button>
+                <button class="sird-btn sird-btn-danger-outline" type="button">Descargar</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    }
+
+    @if (activeTab === 'structure') {
+      <section class="sird-section structure-layout">
+        <article class="sird-card">
+          <div class="sird-card-header">
+            <h2 class="sird-card-title">Árbol documental del espacio</h2>
+          </div>
+
+          <div class="sird-card-body folder-list large">
+            <button class="folder active" type="button">
+              <strong>ROOT</strong>
+              <span>3 archivos / -</span>
+            </button>
+
+            <button class="folder" type="button">
+              <strong>01_Actas</strong>
+              <span>1 archivo / 10/06/2026</span>
+            </button>
+
+            <button class="folder" type="button">
+              <strong>02_Anexos</strong>
+              <span>1 archivo / 10/06/2026</span>
+            </button>
+
+            <button class="folder" type="button">
+              <strong>03_Informes</strong>
+              <span>1 archivo / 10/06/2026</span>
+            </button>
+
+            <button class="folder" type="button">
+              <strong>04_Cierre</strong>
+              <span>0 archivos / 10/06/2026</span>
+            </button>
+
+            <div class="sird-callout">
+              <p class="sird-callout-title">Estructura propia</p>
+              <p>
+                Cada espacio colaborativo puede definir su propia estructura documental
+                según el proyecto o dependencia.
+              </p>
+            </div>
+
+            <button class="sird-btn sird-btn-primary" type="button" (click)="createFolder()">
+              Nueva carpeta
+            </button>
+          </div>
+        </article>
+
+        <aside class="sird-card">
+          <div class="sird-card-header">
+            <h2 class="sird-card-title">Gestión de carpetas</h2>
+            <span class="sird-badge sird-badge-success">Editable</span>
+          </div>
+
+          <div class="sird-card-body folder-management">
+            @for (folder of ['01_Actas', '02_Anexos', '03_Informes', '04_Cierre']; track folder) {
+              <div class="folder-card">
+                <strong>{{ folder }}</strong>
+                <span>1 archivo</span>
+
+                <div class="folder-meta">
+                  <small>Creada</small>
+                  <small>10/06/2026</small>
+                </div>
+
+                <div class="folder-meta">
+                  <small>Creada por</small>
+                  <small>Lucía Quispe Mamani</small>
+                </div>
+
+                <div class="folder-actions">
+                  <button class="sird-btn sird-btn-outline sird-btn-sm" type="button">
+                    Ver archivos
+                  </button>
+
+                  <button class="sird-btn sird-btn-outline sird-btn-sm" type="button">
+                    Renombrar
+                  </button>
+
+                  <button class="sird-btn sird-btn-danger-outline sird-btn-sm" type="button">
+                    Mover archivos
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        </aside>
+      </section>
+    }
+
+    @if (activeTab === 'participants') {
+      <section class="sird-section">
+        <article class="sird-card">
+          <div class="sird-card-header">
+            <h2 class="sird-card-title">Participantes del espacio</h2>
+            <span class="sird-badge sird-badge-info">4 visibles</span>
+          </div>
+
+          <div class="sird-table-wrap">
+            <table class="sird-table">
+              <thead>
+                <tr>
+                  <th>Usuario</th>
+                  <th>Nombre</th>
+                  <th>Rol</th>
+                  <th>Permiso</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>jefe_dependencia</td>
+                  <td>Lucía Quispe Mamani</td>
+                  <td>Jefe de Dependencia</td>
+                  <td><span class="sird-badge sird-badge-success">Responsable</span></td>
+                </tr>
+                <tr>
+                  <td>especialista_responsable</td>
+                  <td>Alberto Pérez Ccama</td>
+                  <td>Especialista Responsable</td>
+                  <td><span class="sird-badge sird-badge-info">Editor</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    }
+
+    @if (activeTab === 'activity') {
+      <section class="sird-section">
+        <article class="sird-card">
+          <div class="sird-card-header">
+            <h2 class="sird-card-title">Actividad del espacio</h2>
+            <span class="sird-badge sird-badge-info">M06</span>
+          </div>
+
+          <div class="sird-card-body activity-timeline">
+            <div>
+              <strong>10/06/2026 10:42</strong>
+              <span>Carpeta creada: 03_Informes</span>
+            </div>
+
+            <div>
+              <strong>10/06/2026 10:15</strong>
+              <span>Archivo cargado: informe_avance_vial.pdf</span>
+            </div>
+
+            <div>
+              <strong>10/06/2026 09:55</strong>
+              <span>Acceso actualizado para Especialista Responsable</span>
+            </div>
+          </div>
+        </article>
+      </section>
+    }
+
+    @if (activeTab === 'closure') {
+      <section class="sird-section">
+        <article class="sird-card">
+          <div class="sird-card-header">
+            <h2 class="sird-card-title">Cierre formal</h2>
+            <span class="sird-badge sird-badge-warning">Pendiente</span>
+          </div>
+
+          <div class="sird-card-body">
+            <div class="sird-callout">
+              <p class="sird-callout-title">Condición de cierre</p>
+              <p>
+                El cierre formal requiere documentos finales, trazabilidad completa y validación del responsable.
+              </p>
+            </div>
+
+            <div class="closure-actions">
+              <button class="sird-btn sird-btn-primary" type="button">
+                Solicitar cierre formal
+              </button>
+
+              <button class="sird-btn sird-btn-outline" type="button">
+                Previsualizar acta
+              </button>
+            </div>
+          </div>
+        </article>
+      </section>
+    }
+  }
+
+  @if (showSignModal) {
+    <div class="sird-modal-backdrop">
+      <article class="sird-modal sign-modal">
+        <div class="sird-modal-header">
+          <h2 class="sird-modal-title">Firmar archivo EC</h2>
+          <button class="sird-btn sird-btn-outline sird-btn-sm" type="button" (click)="closeSignModal()">
+            Cerrar
+          </button>
+        </div>
+
+        <div class="sird-modal-body sign-body">
+          <div class="sign-row">
+            <strong>Archivo</strong>
+            <span>{{ selectedFileName }}</span>
+          </div>
+
+          <div class="sign-row">
+            <strong>Servicio</strong>
+            <span>Servicio/API de firma digital institucional</span>
+          </div>
+
+          <div class="sign-row">
+            <strong>Resultado esperado</strong>
+            <span>Firma registrada y hash calculado</span>
+          </div>
+
+          <label class="sird-field">
+            <span class="sird-label">PIN o token simulado</span>
+            <input class="sird-input" type="password" value="1234" />
+          </label>
+        </div>
+
+        <div class="sird-modal-footer">
+          <button class="sird-btn sird-btn-outline" type="button" (click)="closeSignModal()">
+            Cancelar
+          </button>
+
+          <button class="sird-btn sird-btn-primary" type="button" (click)="signFile()">
+            Firmar
+          </button>
+        </div>
+      </article>
+    </div>
+  }
+</section>

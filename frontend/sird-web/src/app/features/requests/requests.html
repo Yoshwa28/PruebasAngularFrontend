@@ -1,0 +1,143 @@
+<section class="sird-page requests-page">
+  <header>
+    <p class="sird-page-kicker">Sistema Integrado de Repositorio Digital</p>
+    <h1 class="sird-page-title">Solicitudes y notificaciones</h1>
+    <p class="sird-page-description">
+      Solicitudes visibles por ámbito, estado y capacidad de decisión del perfil actual.
+    </p>
+  </header>
+
+  <section class="sird-section requests-metrics">
+    <article class="sird-stat-card info">
+      <p class="sird-stat-label">Visibles</p>
+      <p class="sird-stat-value">6</p>
+      <p class="sird-stat-help">Según rol</p>
+    </article>
+
+    <article class="sird-stat-card warning">
+      <p class="sird-stat-label">Pendientes</p>
+      <p class="sird-stat-value">1</p>
+      <p class="sird-stat-help">Por decidir</p>
+    </article>
+
+    <article class="sird-stat-card success">
+      <p class="sird-stat-label">Aprobadas</p>
+      <p class="sird-stat-value">2</p>
+      <p class="sird-stat-help">Con permiso</p>
+    </article>
+
+    <article class="sird-stat-card danger">
+      <p class="sird-stat-label">Rechazadas</p>
+      <p class="sird-stat-value">1</p>
+      <p class="sird-stat-help">Con motivo</p>
+    </article>
+
+    <article class="sird-stat-card info">
+      <p class="sird-stat-label">Notificaciones</p>
+      <p class="sird-stat-value">1</p>
+      <p class="sird-stat-help">Eventos</p>
+    </article>
+  </section>
+
+  <section class="sird-section">
+    <div class="sird-tabs">
+      <button class="sird-tab active" type="button">Recibidas</button>
+      <button class="sird-tab" type="button">Enviadas</button>
+      <button class="sird-tab" type="button">Notificaciones</button>
+    </div>
+  </section>
+
+  <section class="sird-section requests-layout">
+    <article class="sird-card">
+      <div class="sird-card-header">
+        <h2 class="sird-card-title">Bandeja de solicitudes</h2>
+        <span class="sird-badge sird-badge-warning">6 visibles</span>
+      </div>
+
+      <div class="sird-table-wrap">
+        <table class="sird-table">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Tipo</th>
+              <th>Documento</th>
+              <th>Solicitante</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (item of requests; track item.code) {
+              <tr class="request-row" (click)="selectRequest(item)">
+                <td><strong>{{ item.code }}</strong></td>
+                <td>{{ item.type }}</td>
+                <td>{{ item.document }}</td>
+                <td>{{ item.requester }}</td>
+                <td>{{ item.date }}</td>
+                <td>
+                  <span
+                    class="sird-badge"
+                    [class.sird-badge-warning]="item.status === 'Pendiente'"
+                    [class.sird-badge-success]="item.status === 'Aprobada'"
+                    [class.sird-badge-danger]="item.status === 'Rechazada'"
+                  >
+                    {{ item.status }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <aside class="sird-card request-detail">
+      <div class="sird-card-header">
+        <h2 class="sird-card-title">Detalle de solicitud</h2>
+        <span
+          class="sird-badge"
+          [class.sird-badge-warning]="selected.status === 'Pendiente'"
+          [class.sird-badge-success]="selected.status === 'Aprobada'"
+          [class.sird-badge-danger]="selected.status === 'Rechazada'"
+        >
+          {{ selected.status }}
+        </span>
+      </div>
+
+      <div class="sird-card-body detail-stack">
+        <div class="request-field">
+          <span>Tipo de solicitud</span>
+          <strong>{{ selected.type }}</strong>
+        </div>
+
+        <div class="request-field">
+          <span>Documento relacionado</span>
+          <strong>{{ selected.document }}</strong>
+        </div>
+
+        <div class="request-field">
+          <span>Solicitante</span>
+          <strong>{{ selected.requester }}</strong>
+        </div>
+
+        <div class="request-field">
+          <span>Dependencia</span>
+          <strong>Sub Gerencia de Obras</strong>
+        </div>
+
+        <div class="request-field">
+          <span>Justificación</span>
+          <p>
+            Requiere consulta del documento para completar revisión técnica asignada.
+          </p>
+        </div>
+
+        <div class="request-actions">
+          <button class="sird-btn sird-btn-primary" type="button" (click)="approve()">Aprobar</button>
+          <button class="sird-btn sird-btn-danger-outline" type="button" (click)="reject()">Rechazar</button>
+        </div>
+      </div>
+    </aside>
+  </section>
+</section>

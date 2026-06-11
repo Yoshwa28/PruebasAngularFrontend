@@ -1,0 +1,972 @@
+/* =========================================================
+   SIRD - Sistema Integrado de Repositorio Digital
+   Estilos globales base - Angular
+   ========================================================= */
+
+:root {
+  --primary: #8a0024;
+  --primary-dark: #6e001d;
+  --primary-alt: #9b1538;
+  --primary-soft: #f6eef1;
+
+  --sidebar: #30363c;
+  --sidebar-dark: #262c31;
+
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --surface-alt: #fafbfc;
+
+  --line: #d8dee5;
+  --line-strong: #c4ccd5;
+
+  --text: #17212f;
+  --text-soft: #344256;
+  --muted: #64748b;
+
+  --success: #218a4a;
+  --success-soft: #e8f6ee;
+
+  --warning: #b7791f;
+  --warning-soft: #fff4d8;
+
+  --danger: #b4233a;
+  --danger-soft: #fdecef;
+
+  --info: #2b6c91;
+  --info-soft: #e9f4fa;
+
+  --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 12px 28px rgba(15, 23, 42, 0.1);
+  --shadow-primary: 0 12px 24px rgba(138, 0, 36, 0.22);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+
+  --sidebar-width: 250px;
+  --topbar-height: 64px;
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* =========================================================
+   Utilidades generales
+   ========================================================= */
+
+.sird-muted {
+  color: var(--muted);
+}
+
+.sird-strong {
+  font-weight: 800;
+}
+
+.sird-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.sird-grid-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sird-grid-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.sird-grid-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.sird-grid-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.sird-grid-6 {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.sird-flex {
+  display: flex;
+}
+
+.sird-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.sird-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sird-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* =========================================================
+   Botones
+   ========================================================= */
+
+.sird-btn {
+  min-height: 38px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 0 18px;
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 800;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.sird-btn:hover {
+  transform: translateY(-1px);
+}
+
+.sird-btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+  box-shadow: var(--shadow-primary);
+}
+
+.sird-btn-primary:hover {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
+.sird-btn-outline {
+  background: #ffffff;
+  border-color: var(--line-strong);
+  color: var(--text);
+}
+
+.sird-btn-outline:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.sird-btn-danger-outline {
+  background: #ffffff;
+  border-color: #f0b8c4;
+  color: var(--primary);
+}
+
+.sird-btn-sm {
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.sird-btn-block {
+  width: 100%;
+}
+
+/* =========================================================
+   Formularios
+   ========================================================= */
+
+.sird-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.sird-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.sird-label {
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.sird-input,
+.sird-select,
+.sird-textarea {
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--surface-alt);
+  color: var(--text-soft);
+  padding: 0 14px;
+  outline: none;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.sird-textarea {
+  min-height: 96px;
+  padding-top: 12px;
+  resize: vertical;
+}
+
+.sird-input:focus,
+.sird-select:focus,
+.sird-textarea:focus {
+  border-color: var(--primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(138, 0, 36, 0.08);
+}
+
+/* =========================================================
+   Layout de páginas
+   ========================================================= */
+
+.sird-page {
+  padding: 32px 28px 48px;
+}
+
+.sird-page-kicker {
+  margin: 0 0 4px;
+  color: var(--text-soft);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.sird-page-title {
+  margin: 0;
+  color: var(--text);
+  font-size: 31px;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+}
+
+.sird-page-description {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.sird-section {
+  margin-top: 22px;
+}
+
+/* =========================================================
+   Cards
+   ========================================================= */
+
+.sird-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.sird-card-header {
+  min-height: 58px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.sird-card-title {
+  margin: 0;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.sird-card-body {
+  padding: 20px;
+}
+
+.sird-stat-card {
+  min-height: 108px;
+  padding: 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.sird-stat-card.primary {
+  border-top-color: var(--primary);
+}
+
+.sird-stat-card.info {
+  border-top-color: var(--info);
+}
+
+.sird-stat-card.success {
+  border-top-color: var(--success);
+}
+
+.sird-stat-card.warning {
+  border-top-color: var(--warning);
+}
+
+.sird-stat-card.danger {
+  border-top-color: var(--danger);
+}
+
+.sird-stat-label {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.sird-stat-value {
+  margin: 0;
+  color: var(--text);
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -0.04em;
+}
+
+.sird-stat-help {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* =========================================================
+   Badges y pills
+   ========================================================= */
+
+.sird-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.sird-badge-primary {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.sird-badge-success {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.sird-badge-warning {
+  background: var(--warning-soft);
+  color: var(--warning);
+}
+
+.sird-badge-danger {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.sird-badge-info {
+  background: var(--info-soft);
+  color: var(--info);
+}
+
+.sird-tabs {
+  padding: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sird-tab {
+  min-height: 38px;
+  padding: 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.sird-tab.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+  box-shadow: var(--shadow-primary);
+}
+
+/* =========================================================
+   Tablas
+   ========================================================= */
+
+.sird-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.sird-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+}
+
+.sird-table th,
+.sird-table td {
+  padding: 15px 14px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.sird-table th {
+  background: #f1f4f7;
+  color: var(--text-soft);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.sird-table td {
+  color: var(--text-soft);
+  font-size: 13px;
+}
+
+.sird-table tbody tr:hover {
+  background: #fbfcfd;
+}
+
+/* =========================================================
+   Callouts
+   ========================================================= */
+
+.sird-callout {
+  padding: 16px 18px;
+  border-radius: 12px;
+  border-left: 4px solid var(--info);
+  background: var(--info-soft);
+  color: var(--text-soft);
+}
+
+.sird-callout-title {
+  margin: 0 0 4px;
+  color: var(--text);
+  font-weight: 900;
+}
+
+.sird-callout p {
+  margin: 0;
+}
+
+/* =========================================================
+   Modales
+   ========================================================= */
+
+.sird-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(15, 23, 42, 0.58);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.sird-modal {
+  width: min(560px, 100%);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.sird-modal-header,
+.sird-modal-footer {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.sird-modal-header {
+  border-bottom: 1px solid var(--line);
+}
+
+.sird-modal-footer {
+  border-top: 1px solid var(--line);
+  justify-content: flex-end;
+}
+
+.sird-modal-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.sird-modal-body {
+  padding: 20px;
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .sird-grid-5,
+  .sird-grid-6 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sird-grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sird-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .sird-page {
+    padding: 24px 16px 40px;
+  }
+
+  .sird-page-title {
+    font-size: 26px;
+  }
+
+  .sird-grid-2,
+  .sird-grid-3,
+  .sird-grid-4,
+  .sird-grid-5,
+  .sird-grid-6,
+  .sird-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sird-card-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+/* =========================================================
+   SIRD - Responsive global
+   ========================================================= */
+
+/* Evita desbordes horizontales accidentales */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+/* Páginas */
+.sird-page {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 28px;
+}
+
+.sird-section {
+  margin-top: 18px;
+}
+
+/* Encabezados de página */
+.sird-page-title {
+  overflow-wrap: anywhere;
+}
+
+.sird-page-description {
+  max-width: 780px;
+}
+
+/* Cards */
+.sird-card {
+  min-width: 0;
+}
+
+.sird-card-header {
+  gap: 12px;
+}
+
+.sird-card-body {
+  min-width: 0;
+}
+
+/* Formularios */
+.sird-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.sird-field,
+.sird-input,
+.sird-select {
+  min-width: 0;
+}
+
+.sird-input,
+.sird-select {
+  width: 100%;
+}
+
+/* Botones */
+.sird-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+}
+
+/* Tablas responsive por scroll horizontal */
+.sird-table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sird-table {
+  width: 100%;
+  min-width: 760px;
+}
+
+.sird-table th,
+.sird-table td {
+  white-space: nowrap;
+}
+
+.sird-table td:nth-child(2),
+.sird-table td:nth-child(3) {
+  white-space: normal;
+}
+
+/* Tabs responsive */
+.sird-tabs {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.sird-tab {
+  white-space: nowrap;
+}
+
+/* Modal responsive */
+.sird-modal-backdrop {
+  padding: 18px;
+}
+
+.sird-modal {
+  max-width: 100%;
+  max-height: calc(100vh - 36px);
+  overflow-y: auto;
+}
+
+/* Callouts */
+.sird-callout {
+  min-width: 0;
+}
+
+/* =========================================================
+   Breakpoints generales
+   ========================================================= */
+
+@media (max-width: 1200px) {
+  .sird-page {
+    padding: 24px;
+  }
+
+  .sird-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sird-card-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 900px) {
+  .sird-page {
+    max-width: 100%;
+    padding: 22px 18px;
+  }
+
+  .sird-page-title {
+    font-size: clamp(32px, 8vw, 46px);
+    line-height: 1.02;
+  }
+
+  .sird-page-description {
+    font-size: 15px;
+  }
+
+  .sird-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sird-card-header {
+    width: 100%;
+  }
+
+  .sird-card-header .sird-btn,
+  .sird-card-header button,
+  .sird-card-header a {
+    width: 100%;
+  }
+
+  .sird-btn {
+    width: 100%;
+  }
+
+  .sird-tabs {
+    padding-bottom: 4px;
+  }
+
+  .sird-tab {
+    min-width: max-content;
+  }
+}
+
+@media (max-width: 650px) {
+  .sird-page {
+    padding: 18px 14px;
+  }
+
+  .sird-section {
+    margin-top: 14px;
+  }
+
+  .sird-card {
+    border-radius: 14px;
+  }
+
+  .sird-card-body {
+    padding: 16px;
+  }
+
+  .sird-card-header {
+    padding: 16px;
+  }
+
+  .sird-page-kicker {
+    font-size: 10px;
+  }
+
+  .sird-page-title {
+    font-size: 34px;
+  }
+
+  .sird-page-description {
+    font-size: 14px;
+  }
+
+  .sird-table {
+    min-width: 680px;
+  }
+
+  .sird-modal {
+    border-radius: 16px;
+  }
+
+  .sird-modal-header,
+  .sird-modal-body,
+  .sird-modal-footer {
+    padding: 16px;
+  }
+
+  .sird-modal-footer {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 420px) {
+  .sird-page {
+    padding: 16px 12px;
+  }
+
+  .sird-page-title {
+    font-size: 30px;
+  }
+
+  .sird-table {
+    min-width: 620px;
+  }
+}
+
+/* =========================================================
+   SIRD - Responsive específico de módulos
+   ========================================================= */
+
+@media (max-width: 1200px) {
+  .dashboard-metrics,
+  .requests-metrics,
+  .workspace-metrics,
+  .users-metrics,
+  .systems-metrics,
+  .audit-metrics,
+  .reports-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .dashboard-grid,
+  .search-layout,
+  .detail-layout,
+  .verification-layout,
+  .requests-layout,
+  .workspace-list-layout,
+  .users-layout,
+  .systems-layout,
+  .audit-layout,
+  .reports-layout,
+  .structure-layout {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .dashboard-metrics,
+  .requests-metrics,
+  .workspace-metrics,
+  .users-metrics,
+  .systems-metrics,
+  .audit-metrics,
+  .reports-metrics,
+  .verification-status-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .search-actions,
+  .request-actions,
+  .workspace-actions,
+  .summary-actions,
+  .viewer-actions,
+  .closure-actions,
+  .config-actions,
+  .audit-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .rep-form,
+  .user-search,
+  .audit-filters,
+  .filters-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .summary-grid,
+  .file-detail-grid,
+  .detail-fields,
+  .config-form-grid,
+  .transfer-metrics {
+    grid-template-columns: 1fr !important;
+  }
+
+  .internal-files-layout {
+    grid-template-columns: 1fr !important;
+  }
+}
