@@ -1,69 +1,129 @@
-# =========================
-# Angular / Node
-# =========================
-node_modules/
-dist/
-.angular/
-.cache/
-coverage/
-tmp/
-out-tsc/
+# ============================================================
+# SIRD - Git Ignore
+# ============================================================
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
-# =========================
-# Java / Spring Boot
-# =========================
+# Variables de entorno
+.env
+.env.*
+!.env.example
+
+# ============================================================
+# Angular / Node
+# ============================================================
+
+node_modules/
+**/node_modules/
+
+.angular/
+**/.angular/
+
+dist/
+**/dist/
+
+coverage/
+**/coverage/
+
+.cache/
+**/.cache/
+
+# Builds temporales
+tmp/
+temp/
+
+# Exportaciones generadas
+sird-export-*/
+**/sird-export-*/
+
+sird-export-*.zip
+**/sird-export-*.zip
+
+sird-export-total-*/
+**/sird-export-total-*/
+
+sird-export-total-*.zip
+**/sird-export-total-*.zip
+
+# Archivos generados de análisis
+estructura-sird.txt
+estructura-arbol-sird.txt
+componentes-sird.txt
+archivos-clave-sird.txt
+search-bug-files-sird.txt
+
+**/estructura-sird.txt
+**/estructura-arbol-sird.txt
+**/componentes-sird.txt
+**/archivos-clave-sird.txt
+**/search-bug-files-sird.txt
+
+# ============================================================
+# Java / Spring Boot / Maven / Gradle
+# ============================================================
+
 target/
+**/target/
+
 build/
+**/build/
+
 .gradle/
+**/.gradle/
+
+.mvn/wrapper/maven-wrapper.jar
+
 *.class
 *.jar
 *.war
 *.ear
 
-# =========================
-# IDEs
-# =========================
-.idea/
-.vscode/
-*.iml
-.project
-.classpath
-.settings/
-*.launch
-.c9/
-*.sublime-workspace
-.history/
+# ============================================================
+# Docker / Kubernetes temporales
+# ============================================================
 
-# =========================
-# Logs
-# =========================
-*.log
-logs/
+*.pid
 
-# =========================
-# Variables y configuración local
-# =========================
-.env
-.env.*
-application-local.properties
-application-dev.properties
-application-prod.properties
+# ============================================================
+# Archivos comprimidos y binarios pesados
+# ============================================================
 
-# =========================
-# Archivos comprimidos y backups
-# =========================
 *.zip
 *.rar
 *.7z
-*.bak
-*.backup
-*.tmp
+*.tar
+*.gz
 
-# =========================
-# Sistema operativo
-# =========================
-.DS_Store
-Thumbs.db
+# Documentos pesados locales
+*.pdf
+*.docx
+*.xlsx
+*.pptx
+
+# Imágenes pesadas locales
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.ico
+
+# Si luego tienes assets oficiales que SÍ deban subirse,
+# se pueden permitir con reglas específicas.

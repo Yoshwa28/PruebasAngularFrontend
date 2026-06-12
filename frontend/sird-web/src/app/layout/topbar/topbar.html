@@ -7,8 +7,8 @@
 
   <div class="topbar-actions">
     <select
-      class="topbar-role"
-      [value]="selectedRole.id"
+      class="topbar-role desktop-only"
+      [value]="selectedRoleId()"
       (change)="onRoleChange($event)"
       aria-label="Rol para simulación"
     >
@@ -17,11 +17,19 @@
       }
     </select>
 
-    <button type="button" class="topbar-button" (click)="resetData()">
+    <button
+      type="button"
+      class="topbar-button desktop-only"
+      (click)="resetData()"
+    >
       Restablecer datos
     </button>
 
-    <button type="button" class="topbar-button" (click)="showAlerts()">
+    <button
+      type="button"
+      class="topbar-button desktop-only"
+      (click)="showAlerts()"
+    >
       Avisos
     </button>
 
@@ -33,40 +41,76 @@
         [attr.aria-expanded]="userMenuOpen"
         (click)="toggleUserMenu($event)"
       >
-        <div class="topbar-user">
-          <strong>{{ selectedRole.user }}</strong>
-          <span>{{ selectedRole.username }}</span>
+        <div class="topbar-user desktop-user-text">
+          <strong>{{ fullName() }}</strong>
+          <span>{{ username() }}</span>
         </div>
 
         <div class="topbar-avatar">
-          {{ selectedRole.initials }}
+          {{ initials() }}
         </div>
       </button>
 
       @if (userMenuOpen) {
-        <div class="user-menu">
+        <div class="user-menu" (click)="$event.stopPropagation()">
           <div class="user-menu-header">
             <div class="user-menu-avatar">
-              {{ selectedRole.initials }}
+              {{ initials() }}
             </div>
 
             <div>
-              <strong>{{ selectedRole.user }}</strong>
-              <span>{{ selectedRole.label }}</span>
+              <strong>{{ fullName() }}</strong>
+              <span>{{ roleLabel() }}</span>
             </div>
           </div>
 
+          <div class="user-menu-meta">
+            <span>{{ username() }}</span>
+            <small>{{ position() }}</small>
+            <small>{{ dependency() }}</small>
+          </div>
+
           <div class="user-menu-divider"></div>
+
+          <label class="user-menu-role mobile-only">
+            <span>Rol de simulación</span>
+
+            <select
+              [value]="selectedRoleId()"
+              (change)="onRoleChange($event)"
+              aria-label="Rol para simulación móvil"
+            >
+              @for (role of roles; track role.id) {
+                <option [value]="role.id">{{ role.label }}</option>
+              }
+            </select>
+          </label>
 
           <button type="button" class="user-menu-item">
             Mi perfil
           </button>
 
-          <button type="button" class="user-menu-item">
-            Preferencias
+          <button
+            type="button"
+            class="user-menu-item"
+            (click)="resetData()"
+          >
+            Restablecer datos
           </button>
 
-          <button type="button" class="user-menu-item danger" (click)="logout()">
+          <button
+            type="button"
+            class="user-menu-item"
+            (click)="showAlerts()"
+          >
+            Avisos
+          </button>
+
+          <button
+            type="button"
+            class="user-menu-item danger"
+            (click)="logout()"
+          >
             Cerrar sesión
           </button>
         </div>

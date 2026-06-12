@@ -9,6 +9,9 @@ import { Requests } from './features/requests/requests';
 import { Verification } from './features/verification/verification';
 import { Workspaces } from './features/workspaces/workspaces';
 
+import { authGuard } from './core/guards/auth.guard';
+import { guestGuard } from './core/guards/guest.guard';
+
 export const routes: Routes = [
   {
     path: '',
@@ -18,10 +21,12 @@ export const routes: Routes = [
   {
     path: 'login',
     component: Login,
+    canActivate: [guestGuard],
   },
   {
     path: 'app',
     component: MainLayout,
+    canActivate: [authGuard],
     children: [
       {
         path: '',

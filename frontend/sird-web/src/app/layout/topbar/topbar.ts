@@ -1,13 +1,13 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, computed, inject } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
 
+import { AuthService } from '../../core/auth/auth.service';
+import { SirdRole, SirdRoleId, SirdUser } from '../../core/models/auth.models';
+
 interface RoleOption {
-  id: string;
+  id: SirdRoleId;
   label: string;
-  user: string;
-  username: string;
-  initials: string;
 }
 
 @Component({
@@ -17,48 +17,54 @@ interface RoleOption {
   styleUrl: './topbar.css',
 })
 export class Topbar {
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+
   currentTitle = 'Inicio';
   userMenuOpen = false;
 
-  roles: RoleOption[] = [
-    {
-      id: 'ADMIN_SIRD',
-      label: 'Administrador SIRD',
-      user: 'María Rodríguez Quispe',
-      username: 'admin_sird',
-      initials: 'MR',
-    },
-    {
-      id: 'GERENTE',
-      label: 'Gerente / Sub Gerente',
-      user: 'Carlos Huamán Paredes',
-      username: 'gerente_regional',
-      initials: 'CH',
-    },
-    {
-      id: 'JEFE_DEPENDENCIA',
-      label: 'Jefe de Dependencia / Proyecto',
-      user: 'Lucía Quispe Mamani',
-      username: 'jefe_dependencia',
-      initials: 'LQ',
-    },
-    {
-      id: 'ESPECIALISTA_RESPONSABLE',
-      label: 'Especialista Responsable',
-      user: 'Alberto Pérez Ccama',
-      username: 'especialista_responsable',
-      initials: 'AP',
-    },
-    {
-      id: 'TECNICO_ADMINISTRATIVO',
-      label: 'Técnico / Administrativo',
-      user: 'Tomás Condori Huillca',
-      username: 'tecnico_administrativo',
-      initials: 'TC',
-    },
-  ];
+  roles: RoleOption[] = this.authService.getRoles().map((role) => ({
+    id: role.id,
+    label: role.label,
+  }));
 
-  selectedRole = this.roles[0];
+  session = this.authService.session;
+
+  currentUser = computed<SirdUser | null>(() => {
+    return this.session()?.user ?? null;
+  });
+
+  currentRole = computed<SirdRole | null>(() => {
+    return this.session()?.role ?? null;
+  });
+
+  selectedRoleId = computed<SirdRoleId>(() => {
+    return this.currentRole()?.id ?? 'ADMIN_SIRD';
+  });
+
+  initials = computed<string>(() => {
+    return this.currentUser()?.initials ?? 'US';
+  });
+
+  fullName = computed<string>(() => {
+    return this.currentUser()?.fullName ?? 'Usuario SIRD';
+  });
+
+  username = computed<string>(() => {
+    return this.currentUser()?.username ?? 'usuario';
+  });
+
+  roleLabel = computed<string>(() => {
+    return this.currentRole()?.label ?? 'Rol no definido';
+  });
+
+  dependency = computed<string>(() => {
+    return this.currentUser()?.dependency ?? 'Dependencia no definida';
+  });
+
+  position = computed<string>(() => {
+    return this.currentUser()?.position ?? 'Cargo no definido';
+  });
 
   private routeTitles: Record<string, string> = {
     '/app/inicio': 'Inicio',
@@ -75,18 +81,15 @@ export class Topbar {
     '/app/acceso-no-autorizado': 'Acceso no autorizado',
   };
 
-  constructor(private router: Router) {
-    const storedRole = localStorage.getItem('sird_role');
-    const role = this.roles.find((item) => item.id === storedRole);
-
-    if (role) {
-      this.selectedRole = role;
-    }
-
+  constructor() {
     this.updateTitle(this.router.url);
 
     this.router.events
-      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .pipe(
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd,
+        ),
+      )
       .subscribe((event) => {
         this.updateTitle(event.urlAfterRedirects);
         this.userMenuOpen = false;
@@ -98,15 +101,16 @@ export class Topbar {
     this.userMenuOpen = false;
   }
 
-  onRoleChange(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value;
-    const role = this.roles.find((item) => item.id === value);
+  @HostListener('document:click')
+  closeOnDocumentClick(): void {
+    this.userMenuOpen = false;
+  }
 
-    if (role) {
-      this.selectedRole = role;
-      localStorage.setItem('sird_role', role.id);
-      this.userMenuOpen = false;
-    }
+  onRoleChange(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value as SirdRoleId;
+
+    this.authService.changeRole(value);
+    this.userMenuOpen = false;
   }
 
   toggleUserMenu(event: MouseEvent): void {
@@ -119,9 +123,8 @@ export class Topbar {
   }
 
   logout(): void {
-    localStorage.removeItem('sird_role');
     this.userMenuOpen = false;
-    this.router.navigateByUrl('/login');
+    this.authService.logout();
   }
 
   resetData(): void {

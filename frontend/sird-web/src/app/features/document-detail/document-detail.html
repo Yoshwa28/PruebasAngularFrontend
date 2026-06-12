@@ -1,124 +1,323 @@
 <section class="sird-page detail-page">
   <header>
     <p class="sird-page-kicker">Sistema Integrado de Repositorio Digital</p>
+
     <h1 class="sird-page-title">Detalle documental</h1>
+
     <p class="sird-page-description">
       Metadatos, visor simulado, acciones y mensajes de restricción según permisos.
     </p>
   </header>
 
-  <section class="sird-section detail-layout">
-    <div class="detail-main">
+  @if (document) {
+    <section class="sird-section detail-layout">
+      <div class="detail-main">
+        <article class="sird-card">
+          <div class="sird-card-header">
+            <h2 class="sird-card-title">Información general</h2>
+
+            <span
+              class="sird-badge"
+              [class.sird-badge-success]="hasAccess()"
+              [class.sird-badge-danger]="!hasAccess()"
+            >
+              {{ accessLabel() }}
+            </span>
+          </div>
+
+          <div class="sird-card-body">
+            <div class="detail-title-block">
+              <span>{{ document.repCode }}</span>
+              <h2>{{ document.title }}</h2>
+              <p>{{ document.summary }}</p>
+            </div>
+
+            <div class="detail-fields">
+              <div class="detail-field">
+                <span>Código REP</span>
+                <strong>{{ document.repCode }}</strong>
+              </div>
+
+              <div class="detail-field">
+                <span>Archivo</span>
+                <strong>{{ document.fileName }}</strong>
+              </div>
+
+              <div class="detail-field">
+                <span>Dependencia productora</span>
+                <strong>{{ document.dependency }}</strong>
+              </div>
+
+              <div class="detail-field">
+                <span>Autor / responsable</span>
+                <strong>{{ document.author }}</strong>
+              </div>
+
+              <div class="detail-field">
+                <span>Fecha de registro</span>
+                <strong>{{ formatDate(document.createdAt) }}</strong>
+              </div>
+
+              <div class="detail-field">
+                <span>Fecha de firma</span>
+                <strong>{{ formatDate(document.signedAt) }}</strong>
+              </div>
+
+              <div class="detail-field">
+                <span>Tamaño</span>
+                <strong>{{ document.fileSize }}</strong>
+              </div>
+
+              <div class="detail-field">
+                <span>Etiquetas</span>
+                <strong>{{ document.tags.join(', ') }}</strong>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="sird-card sird-section">
+          <div class="sird-card-header">
+            <h2 class="sird-card-title">Clasificación y seguridad</h2>
+          </div>
+
+          <div class="sird-card-body">
+            <div class="detail-fields">
+              <div class="detail-field">
+                <span>Clasificación</span>
+
+                <strong
+                  class="status-soft"
+                  [class.success]="getClassificationTone(document.classification) === 'success'"
+                  [class.info]="getClassificationTone(document.classification) === 'info'"
+                  [class.warning]="getClassificationTone(document.classification) === 'warning'"
+                  [class.danger]="getClassificationTone(document.classification) === 'danger'"
+                >
+                  {{ getClassificationLabel(document.classification) }}
+                </strong>
+              </div>
+
+              <div class="detail-field">
+                <span>Estado documental</span>
+
+                <strong
+                  class="status-soft"
+                  [class.success]="getStatusTone(document.status) === 'success'"
+                  [class.warning]="getStatusTone(document.status) === 'warning'"
+                  [class.danger]="getStatusTone(document.status) === 'danger'"
+                >
+                  {{ getStatusLabel(document.status) }}
+                </strong>
+              </div>
+
+              <div class="detail-field">
+                <span>Estado PKI</span>
+
+                <strong
+                  class="status-soft"
+                  [class.success]="document.status === 'FIRMADO' || document.status === 'INMUTABLE'"
+                  [class.warning]="document.status === 'PENDIENTE' || document.status === 'OBSERVADO'"
+                >
+                  {{ getPkiLabel(document.status) }}
+                </strong>
+              </div>
+
+              <div class="detail-field">
+                <span>Estado TRD</span>
+
+                <strong
+                  class="status-soft"
+                  [class.success]="document.status === 'FIRMADO' || document.status === 'INMUTABLE'"
+                  [class.danger]="document.status === 'PENDIENTE' || document.status === 'OBSERVADO'"
+                >
+                  {{ getTrdLabel(document.status) }}
+                </strong>
+              </div>
+
+              <div class="detail-field detail-field-wide">
+                <span>SHA-256</span>
+                <strong>{{ shortHash(document.hash) }}</strong>
+              </div>
+
+              <div class="detail-field">
+                <span>Versión activa</span>
+                <strong>v01</strong>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="sird-card sird-section">
+          <div class="sird-card-header">
+            <h2 class="sird-card-title">Trazabilidad simulada</h2>
+            <span class="sird-badge sird-badge-info">M06</span>
+          </div>
+
+          <div class="sird-card-body audit-mini-list">
+            <div>
+              <strong>Registro creado</strong>
+              <p>{{ formatDate(document.createdAt) }} · {{ document.author }}</p>
+            </div>
+
+            <div>
+              <strong>Hash asignado</strong>
+              <p>{{ shortHash(document.hash) }}</p>
+            </div>
+
+            <div>
+              <strong>Estado actual</strong>
+              <p>{{ getStatusLabel(document.status) }}</p>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <aside class="detail-side">
+        <article class="sird-card">
+          <div class="sird-card-header">
+            <h2 class="sird-card-title">Visor documental simulado</h2>
+
+            <span
+              class="sird-badge"
+              [class.sird-badge-success]="canDownload()"
+              [class.sird-badge-danger]="!canDownload()"
+            >
+              {{ canDownload() ? 'Descarga permitida' : 'Descarga restringida' }}
+            </span>
+          </div>
+
+          <div class="sird-card-body">
+            <div
+              class="document-preview"
+              [class.restricted-preview]="!hasAccess()"
+            >
+              <div class="paper">
+                @if (hasAccess()) {
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <br />
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                } @else {
+                  <div class="restricted-message">
+                    <strong>Acceso restringido</strong>
+                    <p>Solicita autorización para visualizar el documento.</p>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="viewer-actions">
+              <button
+                class="sird-btn sird-btn-primary"
+                type="button"
+                [disabled]="!hasAccess()"
+                (click)="openViewer()"
+              >
+                Abrir visor
+              </button>
+
+              <button
+                class="sird-btn sird-btn-outline"
+                type="button"
+                [disabled]="!canDownload()"
+                (click)="download()"
+              >
+                Descargar
+              </button>
+
+              <button
+                class="sird-btn sird-btn-danger-outline"
+                type="button"
+                (click)="viewRep()"
+              >
+                Ver REP
+              </button>
+
+              <button
+                class="sird-btn sird-btn-danger-outline"
+                type="button"
+                (click)="viewHistory()"
+              >
+                Ver historial
+              </button>
+
+              @if (!hasAccess()) {
+                <button
+                  class="sird-btn sird-btn-primary"
+                  type="button"
+                  (click)="requestAccess()"
+                >
+                  Solicitar acceso
+                </button>
+              }
+            </div>
+
+            @if (actionMessage) {
+              <div class="detail-message">
+                {{ actionMessage }}
+              </div>
+            }
+          </div>
+        </article>
+
+        <article class="sird-card sird-section">
+          <div class="sird-card-header">
+            <h2 class="sird-card-title">Alcance actual</h2>
+          </div>
+
+          <div class="sird-card-body side-list">
+            <div>
+              <strong>Usuario</strong>
+              <p>{{ fullName() }}</p>
+            </div>
+
+            <div>
+              <strong>Rol</strong>
+              <p>{{ roleLabel() }}</p>
+            </div>
+
+            <div>
+              <strong>Permiso</strong>
+              <p>{{ accessLabel() }}</p>
+            </div>
+          </div>
+        </article>
+
+        <button
+          class="sird-btn sird-btn-outline detail-back-button"
+          type="button"
+          (click)="goBackToSearch()"
+        >
+          Volver a búsqueda
+        </button>
+      </aside>
+    </section>
+  } @else {
+    <section class="sird-section">
       <article class="sird-card">
         <div class="sird-card-header">
-          <h2 class="sird-card-title">Información general</h2>
-          <span class="sird-badge sird-badge-success">Acceso autorizado</span>
+          <h2 class="sird-card-title">Documento no encontrado</h2>
+          <span class="sird-badge sird-badge-danger">Sin coincidencias</span>
         </div>
 
-        <div class="sird-card-body">
-          <div class="detail-fields">
-            <div class="detail-field">
-              <span>Código REP</span>
-              <strong>REP-2026-000123</strong>
-            </div>
+        <div class="sird-card-body empty-detail">
+          <strong>No se pudo cargar el documento solicitado.</strong>
+          <p>
+            Verifica el código REP, vuelve a la búsqueda documental o selecciona otro registro.
+          </p>
 
-            <div class="detail-field">
-              <span>Nombre del documento</span>
-              <strong>Plan Operativo Regional 2026</strong>
-            </div>
-
-            <div class="detail-field">
-              <span>Tipo documental</span>
-              <strong>Plan</strong>
-            </div>
-
-            <div class="detail-field">
-              <span>Serie documental</span>
-              <strong>PLA-01</strong>
-            </div>
-
-            <div class="detail-field">
-              <span>Dependencia productora</span>
-              <strong>Gerencia General Regional</strong>
-            </div>
-
-            <div class="detail-field">
-              <span>Sistema origen</span>
-              <strong>Planeamiento Regional</strong>
-            </div>
-          </div>
+          <button
+            class="sird-btn sird-btn-primary"
+            type="button"
+            (click)="goBackToSearch()"
+          >
+            Volver a búsqueda
+          </button>
         </div>
       </article>
-
-      <article class="sird-card sird-section">
-        <div class="sird-card-header">
-          <h2 class="sird-card-title">Clasificación y seguridad</h2>
-        </div>
-
-        <div class="sird-card-body">
-          <div class="detail-fields">
-            <div class="detail-field">
-              <span>Clasificación</span>
-              <strong class="status-soft success">Público</strong>
-            </div>
-
-            <div class="detail-field">
-              <span>Estado PKI</span>
-              <strong class="status-soft success">Firmado</strong>
-            </div>
-
-            <div class="detail-field">
-              <span>Estado TRD</span>
-              <strong class="status-soft success">Vigente</strong>
-            </div>
-
-            <div class="detail-field">
-              <span>SHA-256</span>
-              <strong>9f8a5c0b1e0a6f4c2b91</strong>
-            </div>
-
-            <div class="detail-field">
-              <span>Versión activa</span>
-              <strong>v03</strong>
-            </div>
-
-            <div class="detail-field">
-              <span>Descripción</span>
-              <strong>Documento final de plan</strong>
-            </div>
-          </div>
-        </div>
-      </article>
-    </div>
-
-    <aside class="detail-side">
-      <article class="sird-card">
-        <div class="sird-card-header">
-          <h2 class="sird-card-title">Visor documental simulado</h2>
-          <span class="sird-badge sird-badge-success">Descarga permitida</span>
-        </div>
-
-        <div class="sird-card-body">
-          <div class="document-preview">
-            <div class="paper">
-              <span></span>
-              <span></span>
-              <span></span>
-              <br />
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </div>
-
-          <div class="viewer-actions">
-            <button class="sird-btn sird-btn-primary" type="button" (click)="openViewer()">Abrir visor</button>
-            <button class="sird-btn sird-btn-outline" type="button" (click)="download()">Descargar</button>
-            <button class="sird-btn sird-btn-danger-outline" type="button" (click)="viewRep()">Ver REP</button>
-            <button class="sird-btn sird-btn-danger-outline" type="button" (click)="viewHistory()">Ver historial</button>
-          </div>
-        </div>
-      </article>
-    </aside>
-  </section>
+    </section>
+  }
 </section>

@@ -1,16 +1,25 @@
 <section class="sird-page dashboard-page">
   <header class="dashboard-header">
     <p class="sird-page-kicker">Sistema Integrado de Repositorio Digital</p>
+
     <h1 class="sird-page-title">Inicio</h1>
+
     <p class="sird-page-description">
       Vista global adaptada al perfil actual: documentos, solicitudes,
-      espacios, integraciones y alertas.
+      trazabilidad, dependencias visibles y alertas del repositorio.
     </p>
   </header>
 
   <section class="sird-section dashboard-metrics">
-    @for (metric of metrics; track metric.label) {
-      <article class="sird-stat-card" [class]="metric.tone">
+    @for (metric of metrics(); track metric.label) {
+      <article
+        class="sird-stat-card"
+        [class.primary]="metric.tone === 'primary'"
+        [class.info]="metric.tone === 'info'"
+        [class.success]="metric.tone === 'success'"
+        [class.warning]="metric.tone === 'warning'"
+        [class.danger]="metric.tone === 'danger'"
+      >
         <p class="sird-stat-label">{{ metric.label }}</p>
         <p class="sird-stat-value">{{ metric.value }}</p>
         <p class="sird-stat-help">{{ metric.help }}</p>
@@ -27,23 +36,28 @@
 
       <div class="sird-card-body profile-body">
         <div class="profile-row">
-          <strong>Rol actual</strong>
-          <span>Administrador SIRD</span>
+          <strong>Usuario</strong>
+          <span>{{ fullName() }}</span>
         </div>
 
         <div class="profile-row">
-          <strong>Gerencia</strong>
-          <span>Gerencia General Regional</span>
+          <strong>Rol actual</strong>
+          <span>{{ roleLabel() }}</span>
+        </div>
+
+        <div class="profile-row">
+          <strong>Cargo</strong>
+          <span>{{ position() }}</span>
         </div>
 
         <div class="profile-row">
           <strong>Dependencia</strong>
-          <span>Oficina de Tecnologías de la Información</span>
+          <span>{{ dependency() }}</span>
         </div>
 
         <div class="profile-row">
-          <strong>Proyecto</strong>
-          <span>Administración SIRD</span>
+          <strong>Documentos visibles</strong>
+          <span>{{ dashboardSummary().totalDocuments }} registros del repositorio</span>
         </div>
       </div>
     </article>
@@ -51,12 +65,21 @@
     <article class="sird-card alerts-card">
       <div class="sird-card-header">
         <h2 class="sird-card-title">Alertas del sistema</h2>
-        <span class="sird-badge sird-badge-danger">2 TRD</span>
+        <span class="sird-badge sird-badge-danger">
+          {{ dashboardSummary().restrictedDocuments }} restringidos
+        </span>
       </div>
 
       <div class="sird-card-body alerts-list">
-        @for (alert of alerts; track alert.title) {
-          <div class="alert-item" [class]="alert.tone">
+        @for (alert of alerts(); track alert.title) {
+          <div
+            class="alert-item"
+            [class.primary]="alert.tone === 'primary'"
+            [class.info]="alert.tone === 'info'"
+            [class.success]="alert.tone === 'success'"
+            [class.warning]="alert.tone === 'warning'"
+            [class.danger]="alert.tone === 'danger'"
+          >
             <span class="alert-dot"></span>
 
             <div>
@@ -64,6 +87,39 @@
               <p>{{ alert.description }}</p>
             </div>
           </div>
+        }
+      </div>
+    </article>
+  </section>
+
+  <section class="sird-section">
+    <article class="sird-card latest-documents-card">
+      <div class="sird-card-header">
+        <div>
+          <h2 class="sird-card-title">Últimos documentos visibles</h2>
+          <p class="latest-documents-subtitle">
+            Registros recientes calculados desde el repositorio demo centralizado.
+          </p>
+        </div>
+
+        <span class="sird-badge sird-badge-info">
+          {{ latestDocuments().length }} recientes
+        </span>
+      </div>
+
+      <div class="sird-card-body latest-documents-list">
+        @for (document of latestDocuments(); track document.id) {
+          <article class="latest-document-item">
+            <div class="latest-document-main">
+              <strong>{{ document.title }}</strong>
+              <span>{{ document.repCode }} · {{ document.dependency }}</span>
+            </div>
+
+            <div class="latest-document-meta">
+              <span>{{ document.status }}</span>
+              <small>{{ formatDate(document.createdAt) }}</small>
+            </div>
+          </article>
         }
       </div>
     </article>

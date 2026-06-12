@@ -970,3 +970,179 @@ canvas {
     grid-template-columns: 1fr !important;
   }
 }
+
+
+@media (max-width: 900px) {
+  select,
+  option {
+    max-width: 100%;
+  }
+
+  .user-menu select {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+ /* Evita barras horizontales accidentales */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* El scroll vertical principal queda en la ventana */
+body {
+  overflow-y: auto;
+}
+
+/* Ningún layout principal debe forzar ancho extra */
+.sird-shell,
+.sird-main,
+.sird-content,
+.sird-page,
+.sird-card,
+.sird-table-wrap {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   FIX GLOBAL - Topbar móvil compacta
+   ========================================================= */
+
+@media screen and (max-width: 900px) {
+  app-topbar header.topbar {
+    left: 0 !important;
+    height: 64px !important;
+    min-height: 64px !important;
+    max-height: 64px !important;
+    padding: 0 14px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    overflow: visible !important;
+  }
+
+  app-topbar header.topbar .topbar-actions {
+    width: auto !important;
+    flex: 0 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 0 !important;
+  }
+
+  app-topbar header.topbar select.topbar-role.desktop-only,
+  app-topbar header.topbar button.topbar-button.desktop-only,
+  app-topbar header.topbar .desktop-only,
+  app-topbar header.topbar .desktop-user-text {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+  }
+
+  app-topbar header.topbar .topbar-breadcrumb {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 72px) !important;
+    overflow: hidden !important;
+    display: flex !important;
+  }
+
+  app-topbar header.topbar .topbar-breadcrumb span,
+  app-topbar header.topbar .topbar-breadcrumb strong {
+    white-space: nowrap !important;
+  }
+
+  app-topbar header.topbar .topbar-breadcrumb strong:last-child {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  app-topbar header.topbar .topbar-user-wrapper {
+    width: 40px !important;
+    flex: 0 0 40px !important;
+    position: relative !important;
+  }
+
+  app-topbar header.topbar .topbar-user-trigger {
+    width: 40px !important;
+    min-height: 40px !important;
+    border: 0 !important;
+    background: transparent !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  app-topbar header.topbar .topbar-avatar {
+    width: 40px !important;
+    height: 40px !important;
+    flex: 0 0 40px !important;
+  }
+
+  app-topbar header.topbar .user-menu {
+    position: fixed !important;
+    top: 74px !important;
+    right: 14px !important;
+    left: 14px !important;
+    width: auto !important;
+    max-height: calc(100vh - 170px) !important;
+    overflow-y: auto !important;
+    z-index: 120 !important;
+  }
+
+  app-topbar header.topbar .user-menu::before {
+    display: none !important;
+  }
+
+  app-topbar header.topbar .user-menu-role.mobile-only {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: static !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 8px 8px 12px !important;
+    margin: 0 !important;
+    border: 0 !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+  }
+
+  app-topbar header.topbar .user-menu-role.mobile-only select {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: static !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 12px !important;
+    border: 1px solid var(--line-strong) !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+  }
+}

@@ -1,199 +1,242 @@
 <section class="sird-page search-page">
   <header>
-    <p class="sird-page-kicker">Sistema Integrado de Repositorio Digital</p>
+    <p class="sird-page-kicker">Repositorio documental</p>
+
     <h1 class="sird-page-title">Búsqueda documental</h1>
+
     <p class="sird-page-description">
-      Resultados filtrados por permisos, clasificación documental y alcance institucional del perfil.
+      Consulta documentos institucionales aplicando filtros de clasificación, estado,
+      dependencia y código REP.
     </p>
   </header>
 
-  <section class="sird-section search-layout">
-    <div class="search-main">
-      <article class="sird-card">
-        <div class="sird-card-header">
-          <h2 class="sird-card-title">Buscador principal</h2>
-          <span class="sird-badge sird-badge-info">Permisos aplicados</span>
+  <section class="sird-section">
+    <article class="sird-card">
+      <div class="sird-card-header">
+        <div>
+          <h2 class="sird-card-title">Criterios de búsqueda</h2>
+          <p class="sird-card-subtitle">
+            El alcance de resultados se ajusta automáticamente según tu rol institucional.
+          </p>
         </div>
 
-        <div class="sird-card-body">
-          <div class="sird-form-grid">
-            <label class="sird-field">
-              <span class="sird-label">Texto libre</span>
-              <input class="sird-input" value="Nombre, descripción o dependencia" />
-            </label>
+        <span class="sird-badge sird-badge-info">
+          {{ roleLabel() }}
+        </span>
+      </div>
 
-            <label class="sird-field">
-              <span class="sird-label">Código REP</span>
-              <input class="sird-input" value="REP-2026-000123" />
-            </label>
+      <div class="sird-card-body search-filters">
+        <label class="sird-field">
+          <span class="sird-label">Texto libre</span>
 
-            <label class="sird-field">
-              <span class="sird-label">Clasificación</span>
-              <select class="sird-select">
-                <option>Todas</option>
-                <option>Público</option>
-                <option>Interno</option>
-                <option>Restringido</option>
-                <option>Confidencial</option>
-              </select>
-            </label>
+          <input
+            class="sird-input"
+            type="text"
+            placeholder="Título, resumen, autor, dependencia o etiqueta"
+            [(ngModel)]="query"
+            (ngModelChange)="onFilterChange()"
+            (keyup.enter)="search()"
+          />
+        </label>
 
-            <label class="sird-field">
-              <span class="sird-label">Estado PKI</span>
-              <select class="sird-select">
-                <option>Todos</option>
-                <option>Firmado</option>
-                <option>Sin firma</option>
-              </select>
-            </label>
+        <label class="sird-field">
+          <span class="sird-label">Código REP</span>
 
-            <label class="sird-field">
-              <span class="sird-label">Estado TRD</span>
-              <select class="sird-select">
-                <option>Todos</option>
-                <option>Vigente</option>
-                <option>Vencido</option>
-                <option>Transferido</option>
-              </select>
-            </label>
+          <input
+            class="sird-input"
+            type="text"
+            placeholder="Ej. REP-2026-000001"
+            [(ngModel)]="repCode"
+            (ngModelChange)="onFilterChange()"
+            (keyup.enter)="search()"
+          />
+        </label>
 
-            <label class="sird-field">
-              <span class="sird-label">Sistema origen</span>
-              <select class="sird-select">
-                <option>Todos</option>
-                <option>Trámite Documentario Regional</option>
-                <option>Planeamiento Regional</option>
-              </select>
-            </label>
+        <label class="sird-field">
+          <span class="sird-label">Clasificación</span>
 
-            <label class="sird-field">
-              <span class="sird-label">Dependencia</span>
-              <select class="sird-select">
-                <option>Todas las dependencias</option>
-                <option>Gerencia General Regional</option>
-                <option>Sub Gerencia de Obras</option>
-              </select>
-            </label>
+          <select
+            class="sird-select"
+            [(ngModel)]="classification"
+            (ngModelChange)="onFilterChange()"
+          >
+            <option value="TODOS">Todas</option>
+            <option value="PUBLICO">Público</option>
+            <option value="INTERNO">Interno</option>
+            <option value="RESTRINGIDO">Restringido</option>
+            <option value="CONFIDENCIAL">Confidencial</option>
+          </select>
+        </label>
 
-            <label class="sird-field">
-              <span class="sird-label">Fecha desde</span>
-              <input class="sird-input" placeholder="dd/mm/aaaa" />
-            </label>
+        <label class="sird-field">
+          <span class="sird-label">Estado</span>
 
-            <label class="sird-field">
-              <span class="sird-label">Fecha hasta</span>
-              <input class="sird-input" placeholder="dd/mm/aaaa" />
-            </label>
-          </div>
+          <select
+            class="sird-select"
+            [(ngModel)]="status"
+            (ngModelChange)="onFilterChange()"
+          >
+            <option value="TODOS">Todos</option>
+            <option value="PENDIENTE">Pendiente</option>
+            <option value="FIRMADO">Firmado</option>
+            <option value="INMUTABLE">Inmutable</option>
+            <option value="OBSERVADO">Observado</option>
+          </select>
+        </label>
 
-          <div class="search-actions">
-            <button class="sird-btn sird-btn-primary" type="button" (click)="search()">Buscar</button>
-            <button class="sird-btn sird-btn-outline" type="button" (click)="clear()">Limpiar</button>
-          </div>
+        <label class="sird-field">
+          <span class="sird-label">Dependencia</span>
+
+          <select
+            class="sird-select"
+            [(ngModel)]="dependency"
+            (ngModelChange)="onFilterChange()"
+          >
+            <option value="">Todas</option>
+
+            @for (item of dependencies; track item) {
+              <option [value]="item">{{ item }}</option>
+            }
+          </select>
+        </label>
+
+        <div class="search-actions">
+          <button
+            class="sird-btn sird-btn-primary"
+            type="button"
+            (click)="search()"
+          >
+            Buscar
+          </button>
+
+          <button
+            class="sird-btn sird-btn-outline"
+            type="button"
+            (click)="clear()"
+          >
+            Limpiar
+          </button>
         </div>
-      </article>
+      </div>
+    </article>
+  </section>
 
-      <article class="sird-card sird-section">
-        <div class="sird-card-header">
-          <h2 class="sird-card-title">Resultados de búsqueda</h2>
-          <span class="sird-badge sird-badge-warning">11 resultados</span>
-        </div>
+  <section class="sird-section">
+    <div class="search-summary">
+      <div>
+        <h2>Resultados</h2>
+        <p>
+          {{ results.length }} documento(s) visible(s) para
+          <strong>{{ fullName() }}</strong>
+        </p>
+      </div>
 
-        <div class="sird-table-wrap">
-          <table class="sird-table">
-            <thead>
-              <tr>
-                <th>REP</th>
-                <th>Documento</th>
-                <th>Dependencia</th>
-                <th>Clasificación</th>
-                <th>PKI</th>
-                <th>TRD</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              @for (item of results; track item.rep) {
-                <tr>
-                  <td><strong>{{ item.rep }}</strong></td>
-                  <td>{{ item.document }}</td>
-                  <td>{{ item.dependency }}</td>
-                  <td>
-                    <span
-                      class="sird-badge"
-                      [class.sird-badge-success]="item.classification === 'Público'"
-                      [class.sird-badge-info]="item.classification === 'Interno'"
-                      [class.sird-badge-danger]="item.classification === 'Restringido'"
-                    >
-                      {{ item.classification }}
-                    </span>
-                  </td>
-                  <td>
-                    <span class="sird-badge sird-badge-success">{{ item.pki }}</span>
-                  </td>
-                  <td>
-                    <span
-                      class="sird-badge"
-                      [class.sird-badge-success]="item.trd === 'Vigente'"
-                      [class.sird-badge-danger]="item.trd === 'Vencido'"
-                    >
-                      {{ item.trd }}
-                    </span>
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      </article>
+      <span class="sird-badge sird-badge-warning">
+        Control RBAC activo
+      </span>
     </div>
 
-    <aside class="search-side">
-      <article class="sird-card">
-        <div class="sird-card-header">
-          <h2 class="sird-card-title">Control de acceso</h2>
-        </div>
+    @if (results.length > 0) {
+      <div class="document-grid">
+        @for (document of results; track document.id) {
+          <article class="sird-card document-card">
+            <div class="document-card-header">
+              <div>
+                <span class="rep-code">{{ document.repCode }}</span>
+                <h3>{{ document.title }}</h3>
+              </div>
 
-        <div class="sird-card-body side-list">
-          <div>
-            <strong>Público</strong>
-            <p>Visible para todos los perfiles.</p>
-          </div>
+              <span
+                class="sird-badge"
+                [class.sird-badge-success]="document.classification === 'PUBLICO'"
+                [class.sird-badge-info]="document.classification === 'INTERNO'"
+                [class.sird-badge-warning]="document.classification === 'RESTRINGIDO'"
+                [class.sird-badge-danger]="document.classification === 'CONFIDENCIAL'"
+              >
+                {{ getClassificationLabel(document.classification) }}
+              </span>
+            </div>
 
-          <div>
-            <strong>Interno</strong>
-            <p>Visible por alcance, autorización o dependencia.</p>
-          </div>
+            <p class="document-summary">
+              {{ document.summary }}
+            </p>
 
-          <div>
-            <strong>Restringido</strong>
-            <p>Puede requerir solicitud si el perfil lo permite.</p>
-          </div>
+            <div class="document-meta">
+              <div>
+                <span>Dependencia</span>
+                <strong>{{ document.dependency }}</strong>
+              </div>
 
-          <div>
-            <strong>Confidencial</strong>
-            <p>Solo Administrador SIRD o autorización explícita.</p>
-          </div>
+              <div>
+                <span>Autor</span>
+                <strong>{{ document.author }}</strong>
+              </div>
+
+              <div>
+                <span>Fecha</span>
+                <strong>{{ formatDate(document.createdAt) }}</strong>
+              </div>
+
+              <div>
+                <span>Estado</span>
+                <strong>{{ getStatusLabel(document.status) }}</strong>
+              </div>
+            </div>
+
+            <div class="document-tags">
+              @for (tag of document.tags; track tag) {
+                <span>{{ tag }}</span>
+              }
+            </div>
+
+            <div class="document-integrity">
+              <div>
+                <span>PKI</span>
+                <strong>{{ getPkiLabel(document.status) }}</strong>
+              </div>
+
+              <div>
+                <span>TRD</span>
+                <strong>{{ getTrdLabel(document.status) }}</strong>
+              </div>
+
+              <div>
+                <span>Hash</span>
+                <strong>{{ document.hash.slice(0, 12) }}...</strong>
+              </div>
+            </div>
+
+            <div class="document-actions">
+              <button
+                class="sird-btn sird-btn-primary"
+                type="button"
+                (click)="openDetail(document)"
+              >
+                Ver detalle
+              </button>
+            </div>
+          </article>
+        }
+      </div>
+    } @else {
+      <article class="sird-card empty-search">
+        <div class="sird-card-body">
+          <h3>No se encontraron documentos</h3>
+
+          <p>
+            No hay documentos visibles con los filtros actuales o tu rol no tiene alcance
+            sobre esos registros.
+          </p>
+
+          <button
+            class="sird-btn sird-btn-outline"
+            type="button"
+            (click)="clear()"
+          >
+            Restablecer filtros
+          </button>
         </div>
       </article>
-
-      <article class="sird-card sird-section">
-        <div class="sird-card-header">
-          <h2 class="sird-card-title">Alcance actual</h2>
-        </div>
-
-        <div class="sird-card-body side-list">
-          <div>
-            <strong>Usuario</strong>
-            <p>María Rodríguez Quispe</p>
-          </div>
-
-          <div>
-            <strong>Rol</strong>
-            <p>Administrador SIRD</p>
-          </div>
-        </div>
-      </article>
-    </aside>
+    }
   </section>
 </section>

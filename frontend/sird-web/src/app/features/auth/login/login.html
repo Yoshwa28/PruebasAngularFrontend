@@ -54,13 +54,15 @@
         funcional.
       </p>
 
-      <form class="login-form" (submit)="$event.preventDefault(); login()">
+      <form class="login-form" (ngSubmit)="login()">
         <label class="login-field">
           <span>Usuario institucional</span>
           <input
             type="text"
-            value="usuario.institucional"
+            name="username"
+            [(ngModel)]="username"
             autocomplete="username"
+            placeholder="Ej. admin_sird"
           />
         </label>
 
@@ -68,22 +70,44 @@
           <span>Contraseña</span>
           <input
             type="password"
-            value="1234"
+            name="password"
+            [(ngModel)]="password"
             autocomplete="current-password"
+            placeholder="Ingrese su contraseña"
           />
         </label>
 
         <label class="login-field">
           <span>Rol para simulación</span>
-          <select [value]="selectedRole" (change)="onRoleChange($event)">
+          <select
+            name="selectedRole"
+            [value]="selectedRole"
+            (change)="onRoleChange($event)"
+          >
             @for (role of roles; track role.id) {
               <option [value]="role.id">{{ role.label }}</option>
             }
           </select>
         </label>
 
-        <button type="submit" class="login-primary">
-          Ingresar
+        @if (errorMessage) {
+          <div class="login-message login-message-error">
+            {{ errorMessage }}
+          </div>
+        }
+
+        @if (infoMessage) {
+          <div class="login-message login-message-info">
+            {{ infoMessage }}
+          </div>
+        }
+
+        <button
+          type="submit"
+          class="login-primary"
+          [disabled]="loading"
+        >
+          {{ loading ? 'Ingresando...' : 'Ingresar' }}
         </button>
 
         <button
@@ -94,6 +118,26 @@
           Recuperar contraseña
         </button>
       </form>
+
+      <div class="login-demo-users">
+        <strong>Accesos demo rápidos</strong>
+
+        <div class="login-demo-grid">
+          @for (user of demoUsers; track user.id) {
+            <button
+              type="button"
+              class="login-demo-user"
+              (click)="useDemoUser(user.username)"
+            >
+              <span>{{ user.initials }}</span>
+              <div>
+                <strong>{{ user.username }}</strong>
+                <small>{{ user.position }}</small>
+              </div>
+            </button>
+          }
+        </div>
+      </div>
 
       <div class="login-callout">
         <strong>Acceso restringido y auditable</strong>

@@ -1,36 +1,28 @@
 <section class="sird-page audit-page">
   <header>
     <p class="sird-page-kicker">Sistema Integrado de Repositorio Digital</p>
+
     <h1 class="sird-page-title">Auditoría</h1>
+
     <p class="sird-page-description">
       Consulta de eventos M06: accesos, acciones críticas, trazabilidad documental y bloqueos.
     </p>
   </header>
 
   <section class="sird-section audit-metrics">
-    <article class="sird-stat-card info">
-      <p class="sird-stat-label">Eventos visibles</p>
-      <p class="sird-stat-value">8</p>
-      <p class="sird-stat-help">Según perfil</p>
-    </article>
-
-    <article class="sird-stat-card success">
-      <p class="sird-stat-label">Correctos</p>
-      <p class="sird-stat-value">5</p>
-      <p class="sird-stat-help">Sin alerta</p>
-    </article>
-
-    <article class="sird-stat-card warning">
-      <p class="sird-stat-label">Advertencias</p>
-      <p class="sird-stat-value">2</p>
-      <p class="sird-stat-help">Revisar</p>
-    </article>
-
-    <article class="sird-stat-card danger">
-      <p class="sird-stat-label">Bloqueados</p>
-      <p class="sird-stat-value">1</p>
-      <p class="sird-stat-help">Acceso denegado</p>
-    </article>
+    @for (metric of metrics(); track metric.label) {
+      <article
+        class="sird-stat-card"
+        [class.info]="metric.tone === 'info'"
+        [class.success]="metric.tone === 'success'"
+        [class.warning]="metric.tone === 'warning'"
+        [class.danger]="metric.tone === 'danger'"
+      >
+        <p class="sird-stat-label">{{ metric.label }}</p>
+        <p class="sird-stat-value">{{ metric.value }}</p>
+        <p class="sird-stat-help">{{ metric.help }}</p>
+      </article>
+    }
   </section>
 
   <section class="sird-section audit-layout">
@@ -43,117 +35,261 @@
 
         <div class="sird-card-body audit-filters">
           <label class="sird-field">
-            <span class="sird-label">Usuario</span>
-            <input class="sird-input" placeholder="Usuario institucional" />
+            <span class="sird-label">Búsqueda</span>
+
+            <input
+              class="sird-input"
+              type="text"
+              placeholder="Usuario, acción, recurso, REP o detalle"
+              [(ngModel)]="userFilter"
+              (ngModelChange)="applyFilters()"
+              (keyup.enter)="search()"
+            />
           </label>
 
           <label class="sird-field">
             <span class="sird-label">Módulo</span>
-            <select class="sird-select">
-              <option>Todos</option>
-              <option>Autenticación</option>
-              <option>Búsqueda documental</option>
-              <option>Espacios colaborativos</option>
-              <option>Solicitudes</option>
+
+            <select
+              class="sird-select"
+              [(ngModel)]="moduleFilter"
+              (ngModelChange)="applyFilters()"
+            >
+              <option value="Todos">Todos</option>
+              <option value="Autenticación">Autenticación</option>
+              <option value="Búsqueda documental">Búsqueda documental</option>
+              <option value="Detalle documental">Detalle documental</option>
+              <option value="Verificación REP">Verificación REP</option>
+              <option value="Solicitudes">Solicitudes</option>
+              <option value="Espacios colaborativos">Espacios colaborativos</option>
+              <option value="Reportes">Reportes</option>
+              <option value="Configuración">Configuración</option>
+              <option value="Usuarios y roles">Usuarios y roles</option>
+              <option value="Sistemas integrados">Sistemas integrados</option>
+              <option value="Auditoría">Auditoría</option>
             </select>
           </label>
 
           <label class="sird-field">
             <span class="sird-label">Resultado</span>
-            <select class="sird-select">
-              <option>Todos</option>
-              <option>Correcto</option>
-              <option>Advertencia</option>
-              <option>Bloqueado</option>
+
+            <select
+              class="sird-select"
+              [(ngModel)]="resultFilter"
+              (ngModelChange)="applyFilters()"
+            >
+              <option value="Todos">Todos</option>
+              <option value="Correcto">Correcto</option>
+              <option value="Advertencia">Advertencia</option>
+              <option value="Bloqueado">Bloqueado</option>
             </select>
           </label>
 
           <div class="audit-actions">
-            <button class="sird-btn sird-btn-primary" type="button" (click)="search()">
+            <button
+              class="sird-btn sird-btn-primary"
+              type="button"
+              (click)="search()"
+            >
               Buscar
             </button>
 
-            <button class="sird-btn sird-btn-outline" type="button" (click)="exportLog()">
+            <button
+              class="sird-btn sird-btn-outline"
+              type="button"
+              (click)="clearFilters()"
+            >
+              Limpiar
+            </button>
+
+            <button
+              class="sird-btn sird-btn-outline"
+              type="button"
+              (click)="exportLog()"
+            >
               Exportar log
             </button>
           </div>
         </div>
+
+        @if (exportMessage) {
+          <div class="audit-export-message">
+            {{ exportMessage }}
+          </div>
+        }
       </article>
 
       <article class="sird-card sird-section">
         <div class="sird-card-header">
           <h2 class="sird-card-title">Registro de eventos</h2>
-          <span class="sird-badge sird-badge-warning">Log inmutable</span>
+
+          <span class="sird-badge sird-badge-warning">
+            {{ filteredEventsList.length }} evento(s)
+          </span>
         </div>
 
-        <div class="sird-table-wrap">
-          <table class="sird-table">
-            <thead>
-              <tr>
-                <th>Fecha</th>
-                <th>Usuario</th>
-                <th>Acción</th>
-                <th>Módulo</th>
-                <th>Recurso</th>
-                <th>Resultado</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              @for (event of events; track event.date + event.user) {
+        @if (filteredEventsList.length > 0) {
+          <div class="sird-table-wrap">
+            <table class="sird-table">
+              <thead>
                 <tr>
-                  <td>{{ event.date }}</td>
-                  <td><strong>{{ event.user }}</strong></td>
-                  <td>{{ event.action }}</td>
-                  <td>{{ event.module }}</td>
-                  <td>{{ event.resource }}</td>
-                  <td>
-                    <span
-                      class="sird-badge"
-                      [class.sird-badge-success]="event.result === 'Correcto'"
-                      [class.sird-badge-warning]="event.result === 'Advertencia'"
-                      [class.sird-badge-danger]="event.result === 'Bloqueado'"
-                    >
-                      {{ event.result }}
-                    </span>
-                  </td>
+                  <th>Fecha</th>
+                  <th>Usuario</th>
+                  <th>Acción</th>
+                  <th>Módulo</th>
+                  <th>Recurso</th>
+                  <th>Resultado</th>
                 </tr>
-              }
-            </tbody>
-          </table>
-        </div>
+              </thead>
+
+              <tbody>
+                @for (event of filteredEventsList; track event.id) {
+                  <tr
+                    class="audit-row"
+                    [class.selected]="selected?.id === event.id"
+                    (click)="selectEvent(event)"
+                  >
+                    <td>{{ formatDate(event.date) }}</td>
+
+                    <td>
+                      <div class="audit-user-cell">
+                        <strong>{{ event.user }}</strong>
+                        <span>{{ event.userLabel }}</span>
+                      </div>
+                    </td>
+
+                    <td>{{ event.action }}</td>
+                    <td>{{ event.module }}</td>
+                    <td>{{ event.resource }}</td>
+
+                    <td>
+                      <span
+                        class="sird-badge"
+                        [class.sird-badge-success]="event.result === 'Correcto'"
+                        [class.sird-badge-warning]="event.result === 'Advertencia'"
+                        [class.sird-badge-danger]="event.result === 'Bloqueado'"
+                      >
+                        {{ event.result }}
+                      </span>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <div class="empty-audit">
+            <strong>No se encontraron eventos</strong>
+            <p>Ajusta los filtros o limpia la búsqueda para visualizar el log M06.</p>
+          </div>
+        }
       </article>
     </div>
 
-    <aside class="sird-card">
-      <div class="sird-card-header">
-        <h2 class="sird-card-title">Integridad del log</h2>
-        <span class="sird-badge sird-badge-success">Activo</span>
-      </div>
+    <aside class="audit-side-wrap">
+      <article class="sird-card">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Detalle del evento</h2>
 
-      <div class="sird-card-body audit-side">
-        <div>
-          <strong>Modelo</strong>
-          <span>Registro inmutable M06</span>
+          @if (selected) {
+            <span
+              class="sird-badge"
+              [class.sird-badge-success]="selected.result === 'Correcto'"
+              [class.sird-badge-warning]="selected.result === 'Advertencia'"
+              [class.sird-badge-danger]="selected.result === 'Bloqueado'"
+            >
+              {{ selected.result }}
+            </span>
+          }
         </div>
 
-        <div>
-          <strong>Eventos críticos</strong>
-          <span>Login, descarga, firma, acceso denegado, transferencia TRD</span>
+        @if (selected) {
+          <div class="sird-card-body audit-detail">
+            <div>
+              <span>ID</span>
+              <strong>{{ selected.id }}</strong>
+            </div>
+
+            <div>
+              <span>Fecha</span>
+              <strong>{{ formatDate(selected.date) }}</strong>
+            </div>
+
+            <div>
+              <span>Usuario</span>
+              <strong>{{ selected.user }}</strong>
+            </div>
+
+            <div>
+              <span>Nombre / perfil</span>
+              <strong>{{ selected.userLabel }}</strong>
+            </div>
+
+            <div>
+              <span>Acción</span>
+              <strong>{{ selected.action }}</strong>
+            </div>
+
+            <div>
+              <span>Módulo</span>
+              <strong>{{ selected.module }}</strong>
+            </div>
+
+            <div>
+              <span>Recurso</span>
+              <strong>{{ selected.resource }}</strong>
+            </div>
+
+            <div>
+              <span>Detalle</span>
+              <p>{{ selected.detail }}</p>
+            </div>
+          </div>
+        } @else {
+          <div class="sird-card-body empty-audit">
+            <strong>Sin evento seleccionado</strong>
+            <p>Selecciona un evento del registro para revisar su detalle.</p>
+          </div>
+        }
+      </article>
+
+      <article class="sird-card sird-section">
+        <div class="sird-card-header">
+          <h2 class="sird-card-title">Integridad del log</h2>
+          <span class="sird-badge sird-badge-success">Activo</span>
         </div>
 
-        <div>
-          <strong>Exportación</strong>
-          <span>Disponible para Administrador SIRD</span>
-        </div>
+        <div class="sird-card-body audit-side">
+          <div>
+            <strong>Modelo</strong>
+            <span>Registro persistente M06 sobre localStorage</span>
+          </div>
 
-        <div class="sird-callout">
-          <p class="sird-callout-title">Trazabilidad</p>
-          <p>
-            Cada acción relevante queda asociada a usuario, fecha, módulo, recurso y resultado.
-          </p>
+          <div>
+            <strong>Eventos críticos</strong>
+            <span>Login, búsqueda, descarga, firma, acceso denegado, verificación REP y solicitudes</span>
+          </div>
+
+          <div>
+            <strong>Perfil actual</strong>
+            <span>{{ fullName() }} · {{ roleLabel() }}</span>
+          </div>
+
+          <div>
+            <strong>Exportación</strong>
+            <span>
+              {{ canExport() ? 'Disponible para este perfil' : 'Restringida para este perfil' }}
+            </span>
+          </div>
+
+          <div class="sird-callout">
+            <p class="sird-callout-title">Trazabilidad</p>
+            <p>
+              Cada acción relevante queda asociada a usuario, fecha, módulo, recurso y resultado.
+            </p>
+          </div>
         </div>
-      </div>
+      </article>
     </aside>
   </section>
 </section>

@@ -1,9 +1,11 @@
 <section class="sird-page verification-page">
   <header>
     <p class="sird-page-kicker">Sistema Integrado de Repositorio Digital</p>
+
     <h1 class="sird-page-title">Verificación de autenticidad por REP</h1>
+
     <p class="sird-page-description">
-      Consulta de autenticidad documental mediante código REP y validación técnica simulada.
+      Consulta de autenticidad documental mediante código REP, hash, estado PKI y trazabilidad simulada.
     </p>
   </header>
 
@@ -12,56 +14,153 @@
       <article class="sird-card">
         <div class="sird-card-header">
           <h2 class="sird-card-title">Consulta por código REP</h2>
+          <span class="sird-badge sird-badge-info">Validación pública</span>
         </div>
 
         <div class="sird-card-body rep-form">
-          <input class="sird-input" value="REP-2026-000123" />
-          <button class="sird-btn sird-btn-primary" type="button" (click)="verify()">Verificar</button>
-          <button class="sird-btn sird-btn-outline" type="button" (click)="clear()">Limpiar</button>
+          <input
+            class="sird-input"
+            type="text"
+            placeholder="REP-2026-000001"
+            [(ngModel)]="repCode"
+            (keyup.enter)="verify()"
+          />
+
+          <button
+            class="sird-btn sird-btn-primary"
+            type="button"
+            (click)="verify()"
+          >
+            Verificar
+          </button>
+
+          <button
+            class="sird-btn sird-btn-outline"
+            type="button"
+            (click)="clear()"
+          >
+            Limpiar
+          </button>
         </div>
       </article>
 
       <div class="verification-status-grid">
-        <article class="status-card success">
-          <span>Firmado</span>
-          <strong>Firma válida</strong>
-        </article>
-
-        <article class="status-card neutral">
-          <span>Sin firma</span>
-          <strong>Estado legítimo</strong>
-        </article>
-
-        <article class="status-card neutral">
-          <span>No encontrado</span>
-          <strong>Sin registro</strong>
-        </article>
-
-        <article class="status-card danger">
-          <span>Integridad comprometida</span>
-          <strong>Prioridad absoluta</strong>
-        </article>
+        @for (metric of metrics(); track metric.label) {
+          <article
+            class="status-card"
+            [class.success]="metric.tone === 'success'"
+            [class.neutral]="metric.tone === 'neutral'"
+            [class.warning]="metric.tone === 'warning'"
+            [class.danger]="metric.tone === 'danger'"
+            [class.info]="metric.tone === 'info'"
+          >
+            <span>{{ metric.label }}</span>
+            <strong>{{ metric.value }}</strong>
+          </article>
+        }
       </div>
 
       <article class="sird-card sird-section">
         <div class="sird-card-header">
           <h2 class="sird-card-title">Resultado de autenticidad</h2>
+
+          <span
+            class="sird-badge"
+            [class.sird-badge-info]="!verified"
+            [class.sird-badge-success]="verified && document && state === 'valid'"
+            [class.sird-badge-warning]="verified && document && state === 'warning'"
+            [class.sird-badge-danger]="verified && !document"
+          >
+            {{ getResultBadgeLabel() }}
+          </span>
         </div>
 
         <div class="sird-card-body">
-          @if (verified) {
-            <div class="verified-result">
-              <span class="sird-badge sird-badge-success">Firmado</span>
-              <h3>Documento verificado correctamente</h3>
-              <p>
-                El código REP corresponde a un documento final registrado, con firma válida,
-                hash coincidente y trazabilidad disponible en M06.
-              </p>
-            </div>
-          } @else {
+          @if (!verified) {
             <div class="empty-result">
-              <strong>Sin verificación</strong>
-              <p>Ingrese un código REP y presione Verificar.</p>
+              <strong>{{ getResultTitle() }}</strong>
+              <p>{{ getResultDescription() }}</p>
+            </div>
+          } @else if (verified && !document) {
+            <div class="verified-result danger-result">
+              <span class="sird-badge sird-badge-danger">Sin registro</span>
+              <h3>{{ getResultTitle() }}</h3>
+              <p>{{ getResultDescription() }}</p>
+            </div>
+          } @else if (document) {
+            <div
+              class="verified-result"
+              [class.warning-result]="state === 'warning'"
+              [class.success-result]="state === 'valid'"
+            >
+              <span
+                class="sird-badge"
+                [class.sird-badge-success]="state === 'valid'"
+                [class.sird-badge-warning]="state === 'warning'"
+                [class.sird-badge-info]="state === 'unsigned'"
+              >
+                {{ getResultBadgeLabel() }}
+              </span>
+
+              <h3>{{ getResultTitle() }}</h3>
+              <p>{{ getResultDescription() }}</p>
+
+              <div class="verification-detail-grid">
+                <div>
+                  <span>Código REP</span>
+                  <strong>{{ document.repCode }}</strong>
+                </div>
+
+                <div>
+                  <span>Documento</span>
+                  <strong>{{ document.title }}</strong>
+                </div>
+
+                <div>
+                  <span>Dependencia</span>
+                  <strong>{{ document.dependency }}</strong>
+                </div>
+
+                <div>
+                  <span>Clasificación</span>
+                  <strong>{{ getClassificationLabel(document.classification) }}</strong>
+                </div>
+
+                <div>
+                  <span>Estado documental</span>
+                  <strong>{{ getStatusLabel(document.status) }}</strong>
+                </div>
+
+                <div>
+                  <span>Estado PKI</span>
+                  <strong>{{ getPkiLabel(document.status) }}</strong>
+                </div>
+
+                <div>
+                  <span>Estado TRD</span>
+                  <strong>{{ getTrdLabel(document.status) }}</strong>
+                </div>
+
+                <div>
+                  <span>Fecha de registro</span>
+                  <strong>{{ formatDate(document.createdAt) }}</strong>
+                </div>
+
+                <div class="wide">
+                  <span>SHA-256</span>
+                  <strong>{{ shortHash(document.hash) }}</strong>
+                </div>
+              </div>
+
+              <div class="verification-actions">
+                <button
+                  class="sird-btn sird-btn-primary"
+                  type="button"
+                  (click)="openDetail()"
+                >
+                  Ver detalle documental
+                </button>
+              </div>
             </div>
           }
         </div>
@@ -77,17 +176,17 @@
         <div class="sird-card-body side-list">
           <div>
             <strong>Consulta REP</strong>
-            <p>Disponible para todos los perfiles del prototipo.</p>
+            <p>Disponible para todos los perfiles autenticados del prototipo.</p>
           </div>
 
           <div>
             <strong>Constancia</strong>
-            <p>Disponible cuando el resultado es Firmado.</p>
+            <p>Disponible cuando el resultado está firmado o inmutable.</p>
           </div>
 
           <div>
             <strong>Auditoría</strong>
-            <p>Cada verificación se registra en M06.</p>
+            <p>Cada verificación puede registrarse posteriormente en M06.</p>
           </div>
         </div>
       </article>
@@ -105,11 +204,17 @@
           <button
             class="sird-btn sird-btn-outline"
             type="button"
-            [disabled]="!verified"
+            [disabled]="!canGenerateCertificate()"
             (click)="generateCertificate()"
           >
             Generar constancia
           </button>
+
+          @if (certificateMessage) {
+            <div class="certificate-message">
+              {{ certificateMessage }}
+            </div>
+          }
         </div>
       </article>
     </aside>

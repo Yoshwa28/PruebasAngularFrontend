@@ -14,6 +14,10 @@
   gap: 18px;
 }
 
+.mobile-only {
+  display: none;
+}
+
 .topbar-breadcrumb {
   min-width: 0;
   color: var(--muted);
@@ -31,6 +35,12 @@
 .topbar-breadcrumb strong {
   color: var(--text);
   font-weight: 900;
+}
+
+.topbar-breadcrumb strong:last-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .topbar-actions {
@@ -233,6 +243,33 @@
   color: var(--danger);
 }
 
+.user-menu-role {
+  padding: 8px 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.user-menu-role span {
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.user-menu-role select {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: #ffffff;
+  color: var(--text);
+  padding: 0 12px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
 /* Tablet */
 @media (max-width: 1200px) {
   .topbar {
@@ -256,90 +293,198 @@
 @media (max-width: 900px) {
   .topbar {
     left: 0;
+    min-height: 64px;
+    padding: 0 16px;
+    flex-direction: row;
+    align-items: center;
   }
-}
 
-@media (max-width: 650px) {
-  .topbar {
-    padding: 10px 14px;
-    gap: 10px;
+  .desktop-only,
+  .desktop-user-text {
+    display: none;
+  }
+
+  .mobile-only {
+    display: flex;
   }
 
   .topbar-breadcrumb {
-    width: 100%;
-    overflow: hidden;
-  }
-
-  .topbar-breadcrumb strong:last-child {
-    min-width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    flex: 1 1 auto;
+    max-width: calc(100% - 58px);
   }
 
   .topbar-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-
-  .topbar-role {
-    grid-column: 1 / -1;
-    width: 100%;
-    min-height: 38px;
-    font-size: 12px;
-  }
-
-  .topbar-button {
-    width: 100%;
-    min-height: 36px;
-    padding: 0 10px;
-    font-size: 11px;
-  }
-
-  .topbar-user-wrapper {
-    grid-column: 1 / -1;
-    width: 100%;
+    width: auto;
+    flex: 0 0 auto;
+    display: flex;
   }
 
   .topbar-user-trigger {
-    width: 100%;
-    min-height: 42px;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: var(--surface-alt);
-    padding: 6px 8px;
-    justify-content: space-between;
-  }
-
-  .topbar-user {
-    min-width: 0;
-    width: 100%;
-    padding-left: 0;
-    border-left: 0;
-  }
-
-  .topbar-user strong,
-  .topbar-user span {
-    max-width: 100%;
+    width: auto;
   }
 
   .topbar-avatar {
-    width: 34px;
-    height: 34px;
-    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
   }
 
   .user-menu {
     position: fixed;
-    top: auto;
+    top: 74px;
     right: 14px;
-    bottom: 92px;
     left: 14px;
     width: auto;
+    max-height: calc(100vh - 170px);
+    overflow-y: auto;
   }
 
   .user-menu::before {
     display: none;
   }
+}
+
+@media (max-width: 420px) {
+  .topbar {
+    padding: 0 12px;
+  }
+
+  .topbar-breadcrumb {
+    font-size: 12px;
+  }
+
+  .topbar-avatar {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+
+/* =========================================================
+   FIX DEFINITIVO - Ocultar controles de escritorio en móvil
+   ========================================================= */
+
+@media screen and (max-width: 900px) {
+  header.topbar {
+    left: 0 !important;
+    height: 64px !important;
+    min-height: 64px !important;
+    padding: 0 14px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+  }
+
+  header.topbar .topbar-actions {
+    width: auto !important;
+    flex: 0 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 0 !important;
+  }
+
+  header.topbar select.topbar-role.desktop-only,
+  header.topbar button.topbar-button.desktop-only,
+  header.topbar .desktop-only,
+  header.topbar .desktop-user-text {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+  }
+
+  header.topbar .topbar-breadcrumb {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 66px) !important;
+    overflow: hidden !important;
+  }
+
+  header.topbar .topbar-breadcrumb span,
+  header.topbar .topbar-breadcrumb strong {
+    white-space: nowrap !important;
+  }
+
+  header.topbar .topbar-breadcrumb strong:last-child {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  header.topbar .topbar-user-wrapper {
+    width: 40px !important;
+    flex: 0 0 40px !important;
+  }
+
+  header.topbar .topbar-user-trigger {
+    width: 40px !important;
+    min-height: 40px !important;
+    border: 0 !important;
+    background: transparent !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  header.topbar .topbar-avatar {
+    width: 40px !important;
+    height: 40px !important;
+    flex: 0 0 40px !important;
+  }
+
+  header.topbar .user-menu {
+    position: fixed !important;
+    top: 74px !important;
+    right: 14px !important;
+    left: 14px !important;
+    width: auto !important;
+    max-height: calc(100vh - 170px) !important;
+    overflow-y: auto !important;
+  }
+
+  header.topbar .user-menu::before {
+    display: none !important;
+  }
+
+  header.topbar .user-menu-role.mobile-only {
+    display: flex !important;
+    visibility: visible !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: none !important;
+    max-height: none !important;
+    pointer-events: auto !important;
+  }
+}
+
+
+.user-menu-meta {
+  padding: 2px 8px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-menu-meta span {
+  color: var(--text-soft);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.user-menu-meta small {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.35;
 }
